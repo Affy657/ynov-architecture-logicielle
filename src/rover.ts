@@ -1,7 +1,7 @@
 import {IEtatRover, IRover, Orientation} from "./rover.interface";
 import {Map} from "./map";
 
-enum Order { 
+enum Order {
     Avancer = "Avancer",
     Reculer = "Reculer"
 }
@@ -35,8 +35,8 @@ export class Rover implements IRover, IEtatRover {
         return this._orientation;
     }
 
-    public Avancer(): IEtatRover {
-        
+    public Avancer(): Rover {
+
         const coordinate = this.move(this._x, this._y, Order.Avancer);
 
         this._x = coordinate.x;
@@ -45,18 +45,18 @@ export class Rover implements IRover, IEtatRover {
         return this;
     }
 
-    public Reculer(): IEtatRover {
-        
+    public Reculer(): Rover {
+
         const coordinate = this.move(this._x, this._y, Order.Reculer);
-    
+
         this._x = coordinate.x;
         this._y = coordinate.y;
 
         return this;
     }
-    
-    public TournerAGauche(): IEtatRover {
-        
+
+    public TournerAGauche(): Rover {
+
         if (this.GetOrientation() === Orientation.Nord) {
                 this._orientation = Orientation.Ouest;
             }
@@ -72,7 +72,7 @@ export class Rover implements IRover, IEtatRover {
         return this;
     }
 
-    public TournerADroite(): IEtatRover {
+    public TournerADroite(): Rover {
 
         if (this.GetOrientation() === Orientation.Nord) {
             this._orientation = Orientation.Est;
@@ -92,7 +92,7 @@ export class Rover implements IRover, IEtatRover {
     private move(x: number, y: number, order: Order): { x: number, y: number } {
         let deltaX = 0;
         let deltaY = 0;
-    
+
         switch (this._orientation) {
             case Orientation.Nord :
                 deltaY = (order === Order.Avancer) ? 1 : -1;
@@ -107,14 +107,14 @@ export class Rover implements IRover, IEtatRover {
                 deltaX = (order === Order.Avancer) ? -1 : 1;
                 break;
         }
-    
+
         return this.wrapAround( x + deltaX, y + deltaY );
     }
 
     private wrapAround(x: number, y: number): { x: number, y: number } {
         let newX = x % this.max_x;
         let newY = y % this.max_y;
-    
+
         if (newX < 0) {
             newX += this.max_x;
         }
