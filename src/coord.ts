@@ -4,8 +4,8 @@
  * @classdesc Classe représentant des coordonnées.
  */
 export default class Coord {
-  private readonly _x: number;
-  private readonly _y: number;
+  private _x: number;
+  private _y: number;
 
   /**
    * Constructeur de la classe Coord.
@@ -13,12 +13,7 @@ export default class Coord {
    * @param {number} y - La position Y.
    */
   constructor(x: number, y: number) {
-    if (!Number.isSafeInteger(x) || !Number.isSafeInteger(y)) {
-      throw new Error("Les coordonnées doivent être des entiers.");
-    }
-
-    this._x = x;
-    this._y = y;
+    this.set(x, y);
   }
 
   /**
@@ -42,16 +37,23 @@ export default class Coord {
    * @param {Coord} deltaCoord - Les coordonnées avec lesquelles calculer le modulo.
    * @returns {Coord}
    */
-  modulo(deltaCoord: Coord): Coord {
+  public modulo(deltaCoord: Coord): Coord {
     return new Coord(this._x % deltaCoord.x, this._y % deltaCoord.y);
   }
 
-  /**
-   * Crée une nouvelle instance de Coord à partir d'une autre instance de Coord.
-   * @param coord - Les coordonnées à partir desquelles créer une nouvelle instance de Coord.
-   * @returns {Coord}
-   */
-  from(coord: Coord) {
-    return new Coord(coord.x, coord.y);
+  public set(x: number, y:number) {
+    this._x = this.verifyCoord(x) ? x : this.normalize(x);
+    this._y = this.verifyCoord(y) ? y : this.normalize(y);
+  }
+
+  private normalize(coord: number) {
+    return Math.abs(Math.round(coord));
+  }
+
+  private verifyCoord(coord: number) {
+    if (!Number.isSafeInteger(coord)){
+      console.log("Coordonnée invalide, ces coordennées doivent être des entiers positifs");
+    }
+    return Number.isSafeInteger(coord);
   }
 }

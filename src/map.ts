@@ -1,4 +1,4 @@
-import {IMaps} from "./maps.interface";
+
 import Coord from "./coord";
 
 /**
@@ -6,7 +6,7 @@ import Coord from "./coord";
  * @class
  * @classdesc Classe représentant une carte.
  */
-export class Map implements IMaps {
+export class Map  {
     private readonly maxCoord: Coord;
     private readonly minCoord: Coord;
     /**
@@ -43,24 +43,24 @@ export class Map implements IMaps {
      */
     public getNextCoord(coord: Coord) {
         let newCoord = coord.modulo(this.maxCoord);
-        let newX;
-        let newY;
-    
+        let newX = newCoord.x;
+        let newY = newCoord.y;
+
         if (newCoord.x < this.minCoord.x) {
           newX = newCoord.x + this.maxCoord.x;
         }
         if (newCoord.y < this.minCoord.y) {
           newY = newCoord.y + this.maxCoord.y;
         }
-    
+
         if (newCoord.x > this.maxCoord.x) {
           newX = newCoord.x - this.maxCoord.x;
         }
-    
+
         if (newCoord.y > this.maxCoord.y) {
           newY = newCoord.y - this.maxCoord.y;
         }
-    
-        return new Coord(newX || newCoord.x, newY || newCoord.y);
+
+        return new Coord( newX, newY);
     }
 }
