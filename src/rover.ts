@@ -97,7 +97,10 @@ export class Rover implements IRover, IEtatRover {
             }
         return this;
     }
-
+    /**
+     * Fait tourner le Rover à droite de 90°.
+     * @returns {Rover} - L'instance du Rover après avoir tourné à droite.
+     */
     public TournerADroite(): Rover {
 
         if (this.GetOrientation() === Orientation.Nord) {
