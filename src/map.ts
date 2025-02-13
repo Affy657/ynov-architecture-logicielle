@@ -56,10 +56,10 @@ export class Map  {
         if (coord.y < this.minCoord.y) {
           newY = coord.y + this.maxCoord.y;
         }
-        if (coord.x >= this.maxCoord.x) {
+        if (coord.x > this.maxCoord.x) {
           newX = coord.x - this.maxCoord.x;
         }
-        if (coord.y >= this.maxCoord.y) {
+        if (coord.y > this.maxCoord.y) {
           newY = coord.y - this.maxCoord.y;
         }
         coord.set(newX, newY);

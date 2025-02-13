@@ -30,10 +30,10 @@ export class Rover implements IRover, IEtatRover {
         options.x ??= 0;
         options.y ??= 0;
         options.orientation ??= Orientation.Nord;
-
-        this._coord = new Coord(options.x, options.y);
-        this._orientation = options.orientation;
         this._map = options.map ?? new Map(10, 10);
+        this._coord = new Coord(options.x, options.y);
+        this._map.setNextCoord(this._coord);
+        this._orientation = options.orientation;
     }
     /**
      * Retourne la position X du Rover.

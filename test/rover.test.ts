@@ -80,56 +80,56 @@ describe('Rover avance', () => {
     test('Avancer une fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Avancer();
-        const expectedOptions : Pos = {x: 0, y: 1, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 9, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Avancer deux fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Avancer().Avancer();
-        const expectedOptions : Pos = {x: 0, y: 2, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 8, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Avancer trois fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Avancer().Avancer().Avancer();
-        const expectedOptions : Pos = {x: 0, y: 3, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 7, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Avancer quatre fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Avancer().Avancer().Avancer().Avancer();
-        const expectedOptions : Pos = {x: 0, y: 4, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 6, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Reculer une fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Reculer();
-        const expectedOptions : Pos = {x: 0, y: 9, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 1, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Reculer deux fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Reculer().Reculer();
-        const expectedOptions : Pos = {x: 0, y: 8, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 2, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Reculer trois fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Reculer().Reculer().Reculer();
-        const expectedOptions : Pos = {x: 0, y: 7, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 3, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
     test('Reculer quatre fois', () => {
         const rover : Rover = new Rover(inputOptions);
         const etat = rover.Reculer().Reculer().Reculer().Reculer();
-        const expectedOptions : Pos = {x: 0, y: 6, orientation: Orientation.Ouest}
+        const expectedOptions : Pos = {x: 4, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 

@@ -4,6 +4,8 @@
   "description": "Membres :\r Florentin Portets\r Adrien Morand\r Eliot Guihal\r Charles Gauthier\r Rayane Guemmoud\r YOUHOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUu",
   "main": "index.js",
   "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
     "test": "jest"
   },
   "repository": {
@@ -23,6 +25,7 @@
     "@types/node": "^22.13.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
   }
 }

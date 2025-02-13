@@ -11,9 +11,9 @@ export interface IEtatRover {
     GetOrientation(): Orientation;
 }
 
-export abstract class Orientation {
-    static readonly Nord: Orientation;
-    static readonly Sud: Orientation;
-    static readonly Est: Orientation;
-    static readonly Ouest: Orientation;
+export enum Orientation {
+     Nord,
+     Sud,
+     Est,
+     Ouest
 }
