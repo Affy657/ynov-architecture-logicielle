@@ -72,8 +72,4 @@ export class Map  {
     isObstacle(coord: Coord): boolean {
         return this.obstacles.some((obstacle) => obstacle.equals(coord));
     }
-
-    isObstacle(coord: Coord): boolean {
-        return this.obstacles.some((obstacle) => obstacle.equals(coord));
-    }
 }

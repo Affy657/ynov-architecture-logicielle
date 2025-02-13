@@ -141,5 +141,67 @@ describe('Rover avance', () => {
             rover.Avancer();
         }).toThrow("Obstacle detected");
     })
+
+    test('Avancer at the map edge (top)', () => {
+        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10) });
+        const etat = rover.Avancer();
+        const expectedOptions: Pos = { x: 0, y: 1, orientation: Orientation.Nord };
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Avancer at the map edge (right)', () => {
+        const rover: Rover = new Rover({ x: 9, y: 0, orientation: Orientation.Est, map: new Map(10, 10) });
+        const etat = rover.Avancer();
+        const expectedOptions: Pos = { x: 9, y: 0, orientation: Orientation.Est };
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Avancer at the map edge (bottom)', () => {
+        const rover: Rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: new Map(10, 10) });
+        const etat = rover.Avancer();
+        const expectedOptions: Pos = { x: 0, y: 8, orientation: Orientation.Sud };
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Avancer at the map edge (left)', () => {
+        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Ouest, map: new Map(10, 10) });
+        const etat = rover.Avancer();
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Ouest }; // Rover can't go left beyond (0, 0)
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Avancer with multiple obstacles', () => {
+        const map = new Map(10, 10, [new Coord(0, 1), new Coord(0, 2)]);
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map });
+        const etat = rover.Avancer();
+        const expectedOptions: Pos = { x: 0, y: 1, orientation: Orientation.Nord };
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Reculer with obstacles blocking the way', () => {
+        const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
+        const rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map });
+        expect(() => rover.Reculer()).toThrow("Obstacle detected");
+    });
+
+    test('Trying to turn beyond the map bounds', () => {
+        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10) });
+        const etat = rover.TournerADroite().TournerADroite().TournerADroite();
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Sud }; // Ensure Rover stays within bounds
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Avancer multiple times and reach the edge', () => {
+        const rover: Rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: new Map(10, 10) });
+        const etat = rover.Avancer().Avancer();
+        const expectedOptions: Pos = { x: 0, y: 10, orientation: Orientation.Sud }; // Assuming it goes out of bounds
+        basicTest(etat, expectedOptions);
+    });
+
+    test('Obstacle in the middle of movement', () => {
+        const map = new Map(10, 10, [new Coord(0, 5)]);
+        const rover = new Rover({ x: 0, y: 4, orientation: Orientation.Nord, map: map });
+        expect(() => rover.Avancer()).toThrow("Obstacle detected");
+    });
 });
 
