@@ -38,7 +38,7 @@ export class Map  {
      * @returns {number} - La hauteur maximale de la carte.
      */
     public GetMaxY(): number {
-        return this.minCoord.y;
+        return this.maxCoord.y;
     }
 
     /**
