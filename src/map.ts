@@ -9,15 +9,20 @@ import Coord from "./coord";
 export class Map implements IMaps {
     private readonly maxCoord: Coord;
     private readonly minCoord: Coord;
+    private readonly obstacles: Coord[];
+
     /**
      * Constructeur de la classe Map.
      * Initialise une carte avec les dimensions spécifiées.
      * @param {number} x - La largeur maximale de la carte.
      * @param {number} y - La hauteur maximale de la carte.
+     * @param {Coord[]?} obstacles - Les coordonnées des obstacles sur la carte (optionnel, valeur par défaut : []).
      */
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, obstacles?: Coord[]) {
         this.maxCoord = new Coord(x, y);
         this.minCoord = new Coord(0, 0);
+
+        this.obstacles = obstacles ?? [];
     }
 
     /**
@@ -62,5 +67,9 @@ export class Map implements IMaps {
         }
     
         return new Coord(newX || newCoord.x, newY || newCoord.y);
+    }
+
+    isObstacle(coord: Coord): boolean {
+        return this.obstacles.some((obstacle) => obstacle.equals(coord));
     }
 }

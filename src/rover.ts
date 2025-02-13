@@ -138,9 +138,13 @@ export class Rover implements IRover, IEtatRover {
                 break;
         }
 
-        const deltaCoord = new Coord(this.coord.x + deltaX, this.coord.y + deltaY);
+        const nexCoord = this._map.getNextCoord(new Coord(this.coord.x + deltaX, this.coord.y + deltaY));
 
-        return this._map.getNextCoord(deltaCoord)
+        if (this._map.isObstacle(nexCoord)) {
+            throw new Error('Obstacle detected');
+        }
+
+        return nexCoord;
     }
 }
 export namespace Rover {

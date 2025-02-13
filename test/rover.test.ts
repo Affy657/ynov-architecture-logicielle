@@ -1,5 +1,7 @@
 import {IEtatRover, Orientation} from "../src/rover.interface";
 import {Rover} from "../src/rover";
+import { Map } from "../src/map";
+import Coord from "../src/coord";
 
 describe('Rover avance', () => {
     type Pos = {
@@ -129,6 +131,15 @@ describe('Rover avance', () => {
         const etat = rover.Reculer().Reculer().Reculer().Reculer();
         const expectedOptions : Pos = {x: 0, y: 6, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
+    })
+
+    test('Rover must throw an error when an obstacle detected', () => {
+        const map = new Map(10, 10, [new Coord(0, 1)]);
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Est, map: map });
+
+        expect(() => {
+            rover.Avancer();
+        }).toThrow("Obstacle detected");
     })
 });
 
