@@ -31,8 +31,7 @@ export class Rover implements IRover, IEtatRover {
         options.y ??= 0;
         options.orientation ??= Orientation.Nord;
         this._map = options.map ?? new Map(10, 10);
-        this._coord = new Coord(options.x, options.y);
-        this._map.setNextCoord(this._coord);
+        this._coord = this._map.getNextCoord(new Coord(options.x, options.y));
         this._orientation = options.orientation;
     }
     /**
@@ -77,7 +76,6 @@ export class Rover implements IRover, IEtatRover {
      * @returns {this} - L'instance du Rover après avoir tourné à gauche.
      */
     public tournerAGauche(): Rover {
-
         if (this.getOrientation() === Orientation.Nord) {
                 this._orientation = Orientation.Ouest;
             }
@@ -134,8 +132,7 @@ export class Rover implements IRover, IEtatRover {
                 deltaX = (order === Order.Avancer) ? -1 : 1;
                 break;
         }
-        this._coord.set(this._coord.x + deltaX, this._coord.y + deltaY);
-        this._map.setNextCoord(this._coord);
+        this._coord= this._map.getNextCoord(new Coord(this._coord.x + deltaX, this._coord.y + deltaY));
     }
 }
 export namespace Rover {

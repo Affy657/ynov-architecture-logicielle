@@ -5,8 +5,8 @@
  * @classdesc Classe représentant des coordonnées.
  */
 export default class Coord {
-  private _x!: number;
-  private _y!: number;
+  private _x: number;
+  private _y: number;
 
   /**
    * Constructeur de la classe Coord.
@@ -14,7 +14,8 @@ export default class Coord {
    * @param {number} y - La position Y.
    */
   constructor(x: number, y: number) {
-    this.set(x, y);
+    this._x = this.verifyCoord(x) ? x : this.normalize(x);
+    this._y = this.verifyCoord(y) ? y : this.normalize(y);
   }
 
   /**
@@ -37,14 +38,8 @@ export default class Coord {
    * Applique le modulo des coordonnées avec un autre ensemble de coordonnées.
    * @param {Coord} deltaCoord - Les coordonnées avec lesquelles calculer le modulo.
    */
-  public modulo(deltaCoord: Coord) {
-    this.set(this._x % deltaCoord.x, this._y % deltaCoord.y);
-
-  }
-
-  public set(x: number, y:number) {
-    this._x = this.verifyCoord(x) ? x : this.normalize(x);
-    this._y = this.verifyCoord(y) ? y : this.normalize(y);
+  public modulo(deltaCoord: Coord): Coord {
+    return new Coord( this._x % deltaCoord.x, this._y % deltaCoord.y);
   }
 
   private normalize(coord: number) {
@@ -57,21 +52,21 @@ export default class Coord {
     }
     return Number.isSafeInteger(coord);
   }
-    /**
-     * Is coord equal to another coord
-     * @param {Coord} coord - The coord to compare
-     * @returns {boolean}
-     */
-    equals(coord: Coord): boolean {
+  /**
+   * Is coord equal to another coord
+   * @param {Coord} coord - The coord to compare
+   * @returns {boolean}
+   */
+  public equals(coord: Coord): boolean {
         return this._x === coord.x && this._y === coord.y;
-    }
+  }
 
-    /**
-     * Crée une nouvelle instance de Coord à partir d'une autre instance de Coord.
-     * @param coord - Les coordonnées à partir desquelles créer une nouvelle instance de Coord.
-     * @returns {Coord}
-     */
-    from(coord: Coord) {
+  /**
+   * Crée une nouvelle instance de Coord à partir d'une autre instance de Coord.
+   * @param coord - Les coordonnées à partir desquelles créer une nouvelle instance de Coord.
+   * @returns {Coord}
+   */
+  public from(coord: Coord) {
         return new Coord(coord.x, coord.y);
-    }
+  }
 }

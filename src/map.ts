@@ -1,4 +1,3 @@
-
 import Coord from "./coord";
 
 /**
@@ -22,7 +21,6 @@ export class Map  {
     constructor(x: number, y: number, obstacles?: Coord[]) {
         this.maxCoord = new Coord(x, y);
         this.minCoord = new Coord(0, 0);
-
         this.obstacles = obstacles ?? [];
     }
 
@@ -47,11 +45,10 @@ export class Map  {
      * Set next coord wrapping around the map
      * @param {Coord} coord - The current coord
      */
-    public setNextCoord(coord: Coord) {
-        coord.modulo(this.maxCoord);
-        let newX = (coord.x + this.maxCoord.x) % this.maxCoord.x;
-        let newY = (coord.y + this.maxCoord.y) % this.maxCoord.y;
-
+    public getNextCoord(coord: Coord) {
+        const newCoord = coord.modulo(this.maxCoord);
+        let newX = newCoord.x
+        let newY = newCoord.y
         if (coord.x < this.minCoord.x) {
           newX = coord.x + this.maxCoord.x;
         }
@@ -64,10 +61,10 @@ export class Map  {
         if (coord.y > this.maxCoord.y) {
           newY = coord.y - this.maxCoord.y;
         }
-        coord.set(newX, newY);
         if (this.isObstacle(coord)) {
             throw new Error('Obstacle detected');
         }
+        return new Coord(newX, newY);
     }
 
     private isObstacle(coord: Coord): boolean {
