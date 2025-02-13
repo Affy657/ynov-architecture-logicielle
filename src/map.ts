@@ -47,29 +47,27 @@ export class Map  {
      * @returns {Coord}
      */
     public getNextCoord(coord: Coord) {
-        let newCoord = coord.modulo(this.maxCoord);
-        let newX = newCoord.x;
-        let newY = newCoord.y;
+        coord.modulo(this.maxCoord);
+        let newX = coord.x;
+        let newY = coord.y;
 
-        if (newCoord.x < this.minCoord.x) {
-          newX = newCoord.x + this.maxCoord.x;
+        if (coord.x < this.minCoord.x) {
+          newX = coord.x + this.maxCoord.x;
         }
-        if (newCoord.y < this.minCoord.y) {
-          newY = newCoord.y + this.maxCoord.y;
+        if (coord.y < this.minCoord.y) {
+          newY = coord.y + this.maxCoord.y;
         }
-
-        if (newCoord.x > this.maxCoord.x) {
-          newX = newCoord.x - this.maxCoord.x;
+        if (coord.x > this.maxCoord.x) {
+          newX = coord.x - this.maxCoord.x;
         }
-
-        if (newCoord.y > this.maxCoord.y) {
-          newY = newCoord.y - this.maxCoord.y;
+        if (coord.y > this.maxCoord.y) {
+          newY = coord.y - this.maxCoord.y;
         }
 
         return new Coord( newX, newY);
     }
 
-    isObstacle(coord: Coord): boolean {
+    public isObstacle(coord: Coord): boolean {
         return this.obstacles.some((obstacle) => obstacle.equals(coord));
     }
 }
