@@ -173,9 +173,7 @@ describe('Rover avance', () => {
     test('Avancer with multiple obstacles', () => {
         const map = new Map(10, 10, [new Coord(0, 1), new Coord(0, 2)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map });
-        const etat = rover.Avancer();
-        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Nord };
-        basicTest(etat, expectedOptions);
+        expect(() => rover.Avancer()).toThrow("Obstacle detected");
     });
 
     test('Reculer with obstacles blocking the way', () => {
