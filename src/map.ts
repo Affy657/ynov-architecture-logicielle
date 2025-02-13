@@ -47,8 +47,8 @@ export class Map  {
      */
     public setNextCoord(coord: Coord) {
         coord.modulo(this.maxCoord);
-        let newX = coord.x;
-        let newY = coord.y;
+        let newX = (coord.x + this.maxCoord.x) % this.maxCoord.x;
+        let newY = (coord.y + this.maxCoord.y) % this.maxCoord.y;
 
         if (coord.x < this.minCoord.x) {
           newX = coord.x + this.maxCoord.x;
