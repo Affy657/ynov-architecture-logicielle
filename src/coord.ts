@@ -56,4 +56,22 @@ export default class Coord {
     }
     return Number.isSafeInteger(coord);
   }
+    /**
+     * Is coord equal to another coord
+     * @param {Coord} coord - The coord to compare
+     * @returns {boolean}
+     */
+    equals(coord: Coord): boolean {
+        console.log(this._x, coord.x, this._y, coord.y);
+        return this._x === coord.x && this._y === coord.y;
+    }
+
+    /**
+     * Crée une nouvelle instance de Coord à partir d'une autre instance de Coord.
+     * @param coord - Les coordonnées à partir desquelles créer une nouvelle instance de Coord.
+     * @returns {Coord}
+     */
+    from(coord: Coord) {
+        return new Coord(coord.x, coord.y);
+    }
 }
