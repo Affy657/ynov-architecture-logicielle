@@ -38,17 +38,17 @@ export class Map  {
      * @returns {number} - La hauteur maximale de la carte.
      */
     public GetMaxY(): number {
-        return this.minCoord.y;
+        return this.maxCoord.y;
     }
 
     /**
-     * Get next coord wrapping around the map
+     * Set next coord wrapping around the map
      * @param {Coord} coord - The current coord
      */
     public setNextCoord(coord: Coord) {
         coord.modulo(this.maxCoord);
-        let newX = coord.x;
-        let newY = coord.y;
+        let newX = (coord.x + this.maxCoord.x) % this.maxCoord.x;
+        let newY = (coord.y + this.maxCoord.y) % this.maxCoord.y;
 
         if (coord.x < this.minCoord.x) {
           newX = coord.x + this.maxCoord.x;
@@ -56,10 +56,10 @@ export class Map  {
         if (coord.y < this.minCoord.y) {
           newY = coord.y + this.maxCoord.y;
         }
-        if (coord.x > this.maxCoord.x) {
+        if (coord.x >= this.maxCoord.x) {
           newX = coord.x - this.maxCoord.x;
         }
-        if (coord.y > this.maxCoord.y) {
+        if (coord.y >= this.maxCoord.y) {
           newY = coord.y - this.maxCoord.y;
         }
         coord.set(newX, newY);
