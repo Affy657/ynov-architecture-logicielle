@@ -4,8 +4,8 @@
  * @classdesc Classe représentant des coordonnées.
  */
 export default class Coord {
-  private _x: number;
-  private _y: number;
+  private _x!: number;
+  private _y!: number;
 
   /**
    * Constructeur de la classe Coord.
