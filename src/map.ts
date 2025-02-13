@@ -44,9 +44,8 @@ export class Map  {
     /**
      * Get next coord wrapping around the map
      * @param {Coord} coord - The current coord
-     * @returns {Coord}
      */
-    public getNextCoord(coord: Coord) {
+    public setNextCoord(coord: Coord) {
         coord.modulo(this.maxCoord);
         let newX = coord.x;
         let newY = coord.y;
@@ -63,11 +62,13 @@ export class Map  {
         if (coord.y > this.maxCoord.y) {
           newY = coord.y - this.maxCoord.y;
         }
-
-        return new Coord( newX, newY);
+        coord.set(newX, newY);
+        if (this.isObstacle(coord)) {
+            throw new Error('Obstacle detected');
+        }
     }
 
-    public isObstacle(coord: Coord): boolean {
+    private isObstacle(coord: Coord): boolean {
         return this.obstacles.some((obstacle) => obstacle.equals(coord));
     }
 }

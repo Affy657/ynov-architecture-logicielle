@@ -52,7 +52,7 @@ export default class Coord {
 
   private verifyCoord(coord: number) {
     if (!Number.isSafeInteger(coord)){
-      console.log("Coordonnée invalide, ces coordennées doivent être des entiers positifs");
+      console.log("Coordonnée invalide, ces coordonnées doivent être des entiers positifs");
     }
     return Number.isSafeInteger(coord);
   }
