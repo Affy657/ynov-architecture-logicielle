@@ -33,12 +33,12 @@ export default class Coord {
   }
 
   /**
-   * Calcule le modulo des coordonnées avec un autre ensemble de coordonnées.
+   * Applique le modulo des coordonnées avec un autre ensemble de coordonnées.
    * @param {Coord} deltaCoord - Les coordonnées avec lesquelles calculer le modulo.
-   * @returns {Coord}
    */
-  public modulo(deltaCoord: Coord): Coord {
-    return new Coord(this._x % deltaCoord.x, this._y % deltaCoord.y);
+  public modulo(deltaCoord: Coord) {
+    this.set(this._x % deltaCoord.x, this._y % deltaCoord.y);
+
   }
 
   public set(x: number, y:number) {
@@ -62,7 +62,6 @@ export default class Coord {
      * @returns {boolean}
      */
     equals(coord: Coord): boolean {
-        console.log(this._x, coord.x, this._y, coord.y);
         return this._x === coord.x && this._y === coord.y;
     }
 
