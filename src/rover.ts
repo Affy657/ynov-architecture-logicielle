@@ -61,8 +61,7 @@ export class Rover implements IRover, IEtatRover {
      * @returns {this} - L'instance du Rover après avoir avancé.
      */
     public Avancer(): Rover {
-        this._coord = this.move(Order.Avancer);
-
+        this.move(Order.Avancer);
         return this;
     }
     /**
@@ -70,8 +69,7 @@ export class Rover implements IRover, IEtatRover {
      * @returns {this} - L'instance du Rover après avoir reculé.
      */
     public Reculer(): Rover {
-        this._coord = this.move(Order.Reculer);
-
+        this.move(Order.Reculer);
         return this;
     }
     /**
@@ -117,9 +115,8 @@ export class Rover implements IRover, IEtatRover {
     /**
      * Déplace le Rover selon son orientation actuelle et l'ordre (avancer ou reculer).
      * @param {Order} order - L'ordre d'action, soit "Avancer" ou "Reculer".
-     * @returns {Coord} - La nouvelle position du Rover après déplacement.
      */
-    private move(order: Order): Coord {
+    private move(order: Order) {
         let deltaX = 0;
         let deltaY = 0;
 
@@ -143,7 +140,7 @@ export class Rover implements IRover, IEtatRover {
         if (this._map.isObstacle(nexCoord)) {
             throw new Error('Obstacle detected');
         }
-        return nexCoord;
+        this._coord.set(nexCoord.x, nexCoord.y);
     }
 }
 export namespace Rover {
