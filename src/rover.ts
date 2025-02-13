@@ -13,7 +13,7 @@ enum Order {
  * @classdesc Classe représentant un Rover.
  */
 export class Rover implements IRover, IEtatRover {
-    private coord: Coord;
+    private _coord: Coord;
     private _orientation: Orientation;
     private readonly _map: Map;
     /**
@@ -31,7 +31,7 @@ export class Rover implements IRover, IEtatRover {
         options.y ??= 0;
         options.orientation ??= Orientation.Nord;
 
-        this.coord = new Coord(options.x, options.y);
+        this._coord = new Coord(options.x, options.y);
         this._orientation = options.orientation;
         this._map = options.map ?? new Map(10, 10);
     }
@@ -40,14 +40,14 @@ export class Rover implements IRover, IEtatRover {
      * @returns {number} - La position X actuelle du Rover.
      */
     public GetPositionX(): number {
-        return this.coord.x;
+        return this._coord.x;
     }
     /**
      * Retourne la position Y du Rover.
      * @returns {number} - La position Y actuelle du Rover.
      */
     public GetPositionY(): number {
-        return this.coord.y;
+        return this._coord.y;
     }
     /**
      * Retourne l'orientation actuelle du Rover.
@@ -61,7 +61,7 @@ export class Rover implements IRover, IEtatRover {
      * @returns {this} - L'instance du Rover après avoir avancé.
      */
     public Avancer(): Rover {
-        this.coord = this.move(Order.Avancer);
+        this._coord = this.move(Order.Avancer);
 
         return this;
     }
@@ -70,7 +70,7 @@ export class Rover implements IRover, IEtatRover {
      * @returns {this} - L'instance du Rover après avoir reculé.
      */
     public Reculer(): Rover {
-        this.coord = this.move(Order.Reculer);
+        this._coord = this.move(Order.Reculer);
 
         return this;
     }
@@ -138,9 +138,8 @@ export class Rover implements IRover, IEtatRover {
                 break;
         }
 
-        const deltaCoord = new Coord(this.coord.x + deltaX, this.coord.y + deltaY);
-
-        return this._map.getNextCoord(deltaCoord)
+        this._coord.set(this._coord.x + deltaX, this._coord.y + deltaY);
+        return this._map.getNextCoord(this._coord)
     }
 }
 export namespace Rover {
