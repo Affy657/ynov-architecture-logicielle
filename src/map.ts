@@ -2,6 +2,7 @@
 import Coord from "./coord";
 
 /**
+ * Classe clé valeur.
  * Classe représentant une carte.
  * @class
  * @classdesc Classe représentant une carte.
@@ -42,6 +43,7 @@ export class Map  {
     }
 
     /**
+     * Classe clé valeur.
      * Set next coord wrapping around the map
      * @param {Coord} coord - The current coord
      */

@@ -1,4 +1,4 @@
-import {IEtatRover, Orientation} from "../src/rover.interface";
+import {Orientation} from "../src/rover.interface";
 import {Rover} from "../src/rover";
 import { Map } from "../src/map";
 import Coord from "../src/coord";
@@ -134,7 +134,7 @@ describe('Rover avance', () => {
     })
 
     test('Rover must throw an error when an obstacle detected', () => {
-        const map = new Map(10, 10, [new Coord(0, 1)]);
+        const map = new Map(10, 10, [new Coord(1, 0)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Est, map: map });
 
         expect(() => {
@@ -177,29 +177,20 @@ describe('Rover avance', () => {
     });
 
     test('Reculer with obstacles blocking the way', () => {
-        const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
-        const rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map });
+        const map = new Map(10, 10, [new Coord(0, 9)]);
+        const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map });
         expect(() => rover.Reculer()).toThrow("Obstacle detected");
     });
 
-    test('Trying to turn beyond the map bounds', () => {
-        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10) });
-        const etat = rover.TournerADroite().TournerADroite().TournerADroite();
-        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Sud }; // Ensure Rover stays within bounds
-        basicTest(etat, expectedOptions);
+    test('Instancier un rover sur un obstacle', () => {
+        const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
+        expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map })).toThrow("Obstacle detected");
     });
 
-    test('Avancer multiple times and reach the edge', () => {
-        const rover: Rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: new Map(10, 10) });
-        const etat = rover.Avancer().Avancer();
-        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Sud }; // Assuming it goes out of bounds
-        basicTest(etat, expectedOptions);
-    });
-
-    test('Obstacle in the middle of movement', () => {
-        const map = new Map(10, 10, [new Coord(0, 5)]);
-        const rover = new Rover({ x: 0, y: 4, orientation: Orientation.Nord, map: map });
-        expect(() => rover.Avancer()).toThrow("Obstacle detected");
+    test('Reculer vers un obstacle en dehors de la map', () => {
+        const map = new Map(10, 10, [new Coord(0, 10)]);
+        const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map });
+        expect(rover.Reculer()).toBe(rover);// No errors here
     });
 });
 

@@ -1,6 +1,7 @@
 import {Rover} from "./rover";
 import {Orientation} from "./rover.interface";
 import {Map} from "./map";
+import Coord from "./coord";
 
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -10,6 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </p>
   </div>
 `
-const rover: Rover = new Rover({ x: 9, y: 0, orientation: Orientation.Est, map: new Map(10, 10) });
-const etat = rover.Avancer();
+const map = new Map(10, 10, [new Coord(0, 10)]);
+const rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map });
+const etat = rover.Reculer();
 console.log(etat)
