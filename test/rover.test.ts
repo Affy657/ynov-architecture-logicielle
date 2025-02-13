@@ -143,30 +143,30 @@ describe('Rover avance', () => {
     })
 
     test('Avancer at the map edge (top)', () => {
-        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10) });
+        const rover: Rover = new Rover({ x: 0, y: 9, orientation: Orientation.Nord, map: new Map(10, 10) });
         const etat = rover.Avancer();
-        const expectedOptions: Pos = { x: 0, y: 1, orientation: Orientation.Nord };
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Nord };
         basicTest(etat, expectedOptions);
     });
 
     test('Avancer at the map edge (right)', () => {
         const rover: Rover = new Rover({ x: 9, y: 0, orientation: Orientation.Est, map: new Map(10, 10) });
         const etat = rover.Avancer();
-        const expectedOptions: Pos = { x: 9, y: 0, orientation: Orientation.Est };
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Est };
         basicTest(etat, expectedOptions);
     });
 
     test('Avancer at the map edge (bottom)', () => {
-        const rover: Rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: new Map(10, 10) });
+        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: new Map(10, 10) });
         const etat = rover.Avancer();
-        const expectedOptions: Pos = { x: 0, y: 8, orientation: Orientation.Sud };
+        const expectedOptions: Pos = { x: 0, y: 9, orientation: Orientation.Sud };
         basicTest(etat, expectedOptions);
     });
 
     test('Avancer at the map edge (left)', () => {
         const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Ouest, map: new Map(10, 10) });
         const etat = rover.Avancer();
-        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Ouest }; // Rover can't go left beyond (0, 0)
+        const expectedOptions: Pos = { x: 9, y: 0, orientation: Orientation.Ouest };
         basicTest(etat, expectedOptions);
     });
 
@@ -174,7 +174,7 @@ describe('Rover avance', () => {
         const map = new Map(10, 10, [new Coord(0, 1), new Coord(0, 2)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map });
         const etat = rover.Avancer();
-        const expectedOptions: Pos = { x: 0, y: 1, orientation: Orientation.Nord };
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Nord };
         basicTest(etat, expectedOptions);
     });
 
@@ -194,7 +194,7 @@ describe('Rover avance', () => {
     test('Avancer multiple times and reach the edge', () => {
         const rover: Rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: new Map(10, 10) });
         const etat = rover.Avancer().Avancer();
-        const expectedOptions: Pos = { x: 0, y: 10, orientation: Orientation.Sud }; // Assuming it goes out of bounds
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Sud }; // Assuming it goes out of bounds
         basicTest(etat, expectedOptions);
     });
 
