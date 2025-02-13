@@ -1,14 +1,14 @@
 export interface IRover {
-    Avancer(): IEtatRover;
-    Reculer(): IEtatRover;
-    TournerAGauche(): IEtatRover;
-    TournerADroite(): IEtatRover;
+    avancer(): IEtatRover;
+    reculer(): IEtatRover;
+    tournerAGauche(): IEtatRover;
+    tournerADroite(): IEtatRover;
 }
 
 export interface IEtatRover {
-    GetPositionX(): number;
-    GetPositionY(): number;
-    GetOrientation(): Orientation;
+    getPositionX(): number;
+    getPositionY(): number;
+    getOrientation(): Orientation;
 }
 
 export enum Orientation {

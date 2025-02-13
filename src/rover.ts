@@ -39,28 +39,28 @@ export class Rover implements IRover, IEtatRover {
      * Retourne la position X du Rover.
      * @returns {number} - La position X actuelle du Rover.
      */
-    public GetPositionX(): number {
+    public getPositionX(): number {
         return this._coord.x;
     }
     /**
      * Retourne la position Y du Rover.
      * @returns {number} - La position Y actuelle du Rover.
      */
-    public GetPositionY(): number {
+    public getPositionY(): number {
         return this._coord.y;
     }
     /**
      * Retourne l'orientation actuelle du Rover.
      * @returns {Orientation} - L'orientation actuelle du Rover.
      */
-    public GetOrientation(): Orientation {
+    public getOrientation(): Orientation {
         return this._orientation;
     }
     /**
      * Fait avancer le Rover dans sa direction actuelle.
      * @returns {this} - L'instance du Rover après avoir avancé.
      */
-    public Avancer(): Rover {
+    public avancer(): Rover {
         this.move(Order.Avancer);
         return this;
     }
@@ -68,7 +68,7 @@ export class Rover implements IRover, IEtatRover {
      * Fait reculer le Rover dans sa direction actuelle.
      * @returns {this} - L'instance du Rover après avoir reculé.
      */
-    public Reculer(): Rover {
+    public reculer(): Rover {
         this.move(Order.Reculer);
         return this;
     }
@@ -76,18 +76,18 @@ export class Rover implements IRover, IEtatRover {
      * Fait tourner le Rover à gauche de 90°.
      * @returns {this} - L'instance du Rover après avoir tourné à gauche.
      */
-    public TournerAGauche(): Rover {
+    public tournerAGauche(): Rover {
 
-        if (this.GetOrientation() === Orientation.Nord) {
+        if (this.getOrientation() === Orientation.Nord) {
                 this._orientation = Orientation.Ouest;
             }
-        else if (this.GetOrientation() === Orientation.Ouest) {
+        else if (this.getOrientation() === Orientation.Ouest) {
                 this._orientation = Orientation.Sud;
             }
-        else if (this.GetOrientation() === Orientation.Sud) {
+        else if (this.getOrientation() === Orientation.Sud) {
                 this._orientation = Orientation.Est;
             }
-        else if (this.GetOrientation() === Orientation.Est) {
+        else if (this.getOrientation() === Orientation.Est) {
                 this._orientation = Orientation.Nord;
             }
         return this;
@@ -96,18 +96,18 @@ export class Rover implements IRover, IEtatRover {
      * Fait tourner le Rover à droite de 90°.
      * @returns {this} - L'instance du Rover après avoir tourné à droite.
      */
-    public TournerADroite(): Rover {
+    public tournerADroite(): Rover {
 
-        if (this.GetOrientation() === Orientation.Nord) {
+        if (this.getOrientation() === Orientation.Nord) {
             this._orientation = Orientation.Est;
         }
-        else if (this.GetOrientation() === Orientation.Est) {
+        else if (this.getOrientation() === Orientation.Est) {
             this._orientation = Orientation.Sud;
         }
-        else if (this.GetOrientation() === Orientation.Sud) {
+        else if (this.getOrientation() === Orientation.Sud) {
             this._orientation = Orientation.Ouest;
         }
-        else if (this.GetOrientation() === Orientation.Ouest) {
+        else if (this.getOrientation() === Orientation.Ouest) {
             this._orientation = Orientation.Nord;
         }
         return this;

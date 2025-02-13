@@ -30,7 +30,7 @@ export class Map  {
      * Retourne la largeur maximale de la carte.
      * @returns {number} - La largeur maximale de la carte.
      */
-    public GetMaxX(): number {
+    public getMaxX(): number {
         return this.maxCoord.x;
     }
 
@@ -38,7 +38,7 @@ export class Map  {
      * Retourne la hauteur maximale de la carte.
      * @returns {number} - La hauteur maximale de la carte.
      */
-    public GetMaxY(): number {
+    public getMaxY(): number {
         return this.maxCoord.y;
     }
 

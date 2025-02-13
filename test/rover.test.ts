@@ -11,9 +11,9 @@ describe('Rover avance', () => {
     };
 
     const basicTest = (etat: Rover, expectedOptions: Pos) => {
-        expect(etat.GetPositionX()).toBe(expectedOptions.x);
-        expect(etat.GetPositionY()).toBe(expectedOptions.y);
-        expect(etat.GetOrientation()).toBe(expectedOptions.orientation);
+        expect(etat.getPositionX()).toBe(expectedOptions.x);
+        expect(etat.getPositionY()).toBe(expectedOptions.y);
+        expect(etat.getOrientation()).toBe(expectedOptions.orientation);
     };
 
     const inputOptions: Pos = {
@@ -22,113 +22,113 @@ describe('Rover avance', () => {
         y: 0,
     };
 
-    test('TournerAGauche', () => {
+    test('tournerAGauche', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerAGauche();
+        const etat = rover.tournerAGauche();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Sud };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite deux fois', () => {
+    test('tournerADroite deux fois', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite().TournerADroite();
+        const etat = rover.tournerADroite().tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Est };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite trois fois', () => {
+    test('tournerADroite trois fois', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite().TournerADroite().TournerADroite();
+        const etat = rover.tournerADroite().tournerADroite().tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Sud };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite quatre fois', () => {
+    test('tournerADroite quatre fois', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite().TournerADroite().TournerADroite().TournerADroite();
+        const etat = rover.tournerADroite().tournerADroite().tournerADroite().tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Ouest };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite', () => {
+    test('tournerADroite', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite();
+        const etat = rover.tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Nord };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite deux fois', () => {
+    test('tournerADroite deux fois', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite().TournerADroite();
+        const etat = rover.tournerADroite().tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Est };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite trois fois', () => {
+    test('tournerADroite trois fois', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite().TournerADroite().TournerADroite();
+        const etat = rover.tournerADroite().tournerADroite().tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Sud };
         basicTest(etat, expectedOptions);
     });
 
-    test('TournerADroite quatre fois', () => {
+    test('tournerADroite quatre fois', () => {
         const rover: Rover = new Rover(inputOptions);
-        const etat = rover.TournerADroite().TournerADroite().TournerADroite().TournerADroite();
+        const etat = rover.tournerADroite().tournerADroite().tournerADroite().tournerADroite();
         const expectedOptions: Pos = { x: inputOptions.x, y: inputOptions.y, orientation: Orientation.Ouest };
         basicTest(etat, expectedOptions);
     });
-    test('Avancer une fois', () => {
+    test('avancer une fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Avancer();
+        const etat = rover.avancer();
         const expectedOptions : Pos = {x: 9, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Avancer deux fois', () => {
+    test('avancer deux fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Avancer().Avancer();
+        const etat = rover.avancer().avancer();
         const expectedOptions : Pos = {x: 8, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Avancer trois fois', () => {
+    test('avancer trois fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Avancer().Avancer().Avancer();
+        const etat = rover.avancer().avancer().avancer();
         const expectedOptions : Pos = {x: 7, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Avancer quatre fois', () => {
+    test('avancer quatre fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Avancer().Avancer().Avancer().Avancer();
+        const etat = rover.avancer().avancer().avancer().avancer();
         const expectedOptions : Pos = {x: 6, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Reculer une fois', () => {
+    test('reculer une fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Reculer();
+        const etat = rover.reculer();
         const expectedOptions : Pos = {x: 1, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Reculer deux fois', () => {
+    test('reculer deux fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Reculer().Reculer();
+        const etat = rover.reculer().reculer();
         const expectedOptions : Pos = {x: 2, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Reculer trois fois', () => {
+    test('reculer trois fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Reculer().Reculer().Reculer();
+        const etat = rover.reculer().reculer().reculer();
         const expectedOptions : Pos = {x: 3, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
 
-    test('Reculer quatre fois', () => {
+    test('reculer quatre fois', () => {
         const rover : Rover = new Rover(inputOptions);
-        const etat = rover.Reculer().Reculer().Reculer().Reculer();
+        const etat = rover.reculer().reculer().reculer().reculer();
         const expectedOptions : Pos = {x: 4, y: 0, orientation: Orientation.Ouest}
         basicTest(etat,expectedOptions);
     })
@@ -138,48 +138,48 @@ describe('Rover avance', () => {
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Est, map: map });
 
         expect(() => {
-            rover.Avancer();
+            rover.avancer();
         }).toThrow("Obstacle detected");
     })
 
-    test('Avancer at the map edge (top)', () => {
+    test('avancer at the map edge (top)', () => {
         const rover: Rover = new Rover({ x: 0, y: 9, orientation: Orientation.Nord, map: new Map(10, 10) });
-        const etat = rover.Avancer();
+        const etat = rover.avancer();
         const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Nord };
         basicTest(etat, expectedOptions);
     });
 
-    test('Avancer at the map edge (right)', () => {
+    test('avancer at the map edge (right)', () => {
         const rover: Rover = new Rover({ x: 9, y: 0, orientation: Orientation.Est, map: new Map(10, 10) });
-        const etat = rover.Avancer();
+        const etat = rover.avancer();
         const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Est };
         basicTest(etat, expectedOptions);
     });
 
-    test('Avancer at the map edge (bottom)', () => {
+    test('avancer at the map edge (bottom)', () => {
         const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: new Map(10, 10) });
-        const etat = rover.Avancer();
+        const etat = rover.avancer();
         const expectedOptions: Pos = { x: 0, y: 9, orientation: Orientation.Sud };
         basicTest(etat, expectedOptions);
     });
 
-    test('Avancer at the map edge (left)', () => {
+    test('avancer at the map edge (left)', () => {
         const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Ouest, map: new Map(10, 10) });
-        const etat = rover.Avancer();
+        const etat = rover.avancer();
         const expectedOptions: Pos = { x: 9, y: 0, orientation: Orientation.Ouest };
         basicTest(etat, expectedOptions);
     });
 
-    test('Avancer with multiple obstacles', () => {
+    test('avancer with multiple obstacles', () => {
         const map = new Map(10, 10, [new Coord(0, 1), new Coord(0, 2)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map });
-        expect(() => rover.Avancer()).toThrow("Obstacle detected");
+        expect(() => rover.avancer()).toThrow("Obstacle detected");
     });
 
-    test('Reculer with obstacles blocking the way', () => {
+    test('reculer with obstacles blocking the way', () => {
         const map = new Map(10, 10, [new Coord(0, 9)]);
         const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map });
-        expect(() => rover.Reculer()).toThrow("Obstacle detected");
+        expect(() => rover.reculer()).toThrow("Obstacle detected");
     });
 
     test('Instancier un rover sur un obstacle', () => {
@@ -187,10 +187,10 @@ describe('Rover avance', () => {
         expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map })).toThrow("Obstacle detected");
     });
 
-    test('Reculer vers un obstacle en dehors de la map', () => {
+    test('reculer vers un obstacle en dehors de la map', () => {
         const map = new Map(10, 10, [new Coord(0, 10)]);
         const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map });
-        expect(rover.Reculer()).toBe(rover);// No errors here
+        expect(rover.reculer()).toBe(rover);// No errors here
     });
 });
 
