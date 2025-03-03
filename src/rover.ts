@@ -79,10 +79,6 @@ export class Rover implements IRover, IEtatRover {
      * Fait tourner le Rover à gauche de 90°.
      * @returns {this} - L'instance du Rover après avoir tourné à gauche.
      */
-    /**
-     * Fait tourner le Rover à gauche de 90°.
-     * @returns {this} - L'instance du Rover après avoir tourné à gauche.
-     */
     public tournerAGauche(): Rover {
         const orientations = [
             Orientation.Nord,

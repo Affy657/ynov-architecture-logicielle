@@ -46,10 +46,8 @@ export class Map  {
      * @param {Coord} coord - The current coord
      */
     public getNextCoord(coord: Coord) {
-        let newCoord = coord.modulo(this.maxCoord);
-        let newX = newCoord.x;
-        let newY = newCoord.y;
-        return new Coord(newX, newY);
+        const newCoord = coord.modulo(this.maxCoord);
+        return newCoord;
     }
 
     public isObstacle(coord: Coord): boolean {
