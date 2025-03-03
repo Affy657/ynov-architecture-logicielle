@@ -1,7 +1,7 @@
 import Coord from "./coord";
 
 /**
- * Classe clé valeur.
+ * Classe objet valeur.
  * Classe bas niveau.
  * Classe représentant une carte.
  * @class
@@ -42,12 +42,11 @@ export class Map  {
     }
 
     /**
-     * Classe clé valeur.
      * Set next coord wrapping around the map
      * @param {Coord} coord - The current coord
      */
     public getNextCoord(coord: Coord) {
-        const newCoord = coord.modulo(this.maxCoord);
+        let newCoord = coord.modulo(this.maxCoord);
         let newX = newCoord.x
         let newY = newCoord.y
         if (coord.x < this.minCoord.x) {
@@ -62,13 +61,11 @@ export class Map  {
         if (coord.y > this.maxCoord.y) {
           newY = coord.y - this.maxCoord.y;
         }
-        if (this.isObstacle(coord)) {
-            throw new Error('Obstacle detected');
-        }
+
         return new Coord(newX, newY);
     }
 
-    private isObstacle(coord: Coord): boolean {
+    public isObstacle(coord: Coord): boolean {
         return this.obstacles.some((obstacle) => obstacle.equals(coord));
     }
 }

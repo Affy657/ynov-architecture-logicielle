@@ -137,9 +137,10 @@ describe('Rover avance', () => {
         const map = new Map(10, 10, [new Coord(1, 0)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Est, map: map });
 
-        expect(() => {
-            rover.avancer();
-        }).toThrow("Obstacle detected");
+        const positionY = rover.getPositionY();
+        const positionX = rover.getPositionX();
+        expect( rover.avancer().getPositionY()).toBe(positionY);
+        expect( rover.getPositionX()).toBe(positionX);
     })
 
     test('avancer at the map edge (top)', () => {
@@ -173,18 +174,24 @@ describe('Rover avance', () => {
     test('avancer with multiple obstacles', () => {
         const map = new Map(10, 10, [new Coord(0, 1), new Coord(0, 2)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map });
-        expect(() => rover.avancer()).toThrow("Obstacle detected");
+        const positionY = rover.getPositionY();
+        const positionX = rover.getPositionX();
+        expect( rover.avancer().getPositionY()).toBe(positionY);
+        expect( rover.getPositionX()).toBe(positionX);
     });
 
     test('reculer with obstacles blocking the way', () => {
         const map = new Map(10, 10, [new Coord(0, 9)]);
         const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map });
-        expect(() => rover.reculer()).toThrow("Obstacle detected");
+        const positionY = rover.getPositionY();
+        const positionX = rover.getPositionX();
+        expect( rover.reculer().getPositionY()).toBe(positionY);
+        expect( rover.getPositionX()).toBe(positionX);
     });
 
     test('Instancier un rover sur un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
-        expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map })).toThrow("Obstacle detected");
+        expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map })).toThrow("Rover cannot be placed on an obstacle");
     });
 
     test('reculer vers un obstacle en dehors de la map', () => {

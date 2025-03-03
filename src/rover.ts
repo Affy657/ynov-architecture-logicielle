@@ -32,6 +32,9 @@ export class Rover implements IRover, IEtatRover {
         options.y ??= 0;
         options.orientation ??= Orientation.Nord;
         this._map = options.map ?? new Map(10, 10);
+        if ( this._map.isObstacle(new Coord(options.x, options.y))) {
+            throw new Error("Rover cannot be placed on an obstacle");
+        }
         this._coord = this._map.getNextCoord(new Coord(options.x, options.y));
         this._orientation = options.orientation;
     }
@@ -76,21 +79,27 @@ export class Rover implements IRover, IEtatRover {
      * Fait tourner le Rover à gauche de 90°.
      * @returns {this} - L'instance du Rover après avoir tourné à gauche.
      */
+    /**
+     * Fait tourner le Rover à gauche de 90°.
+     * @returns {this} - L'instance du Rover après avoir tourné à gauche.
+     */
     public tournerAGauche(): Rover {
-        if (this.getOrientation() === Orientation.Nord) {
-                this._orientation = Orientation.Ouest;
-            }
-        else if (this.getOrientation() === Orientation.Ouest) {
-                this._orientation = Orientation.Sud;
-            }
-        else if (this.getOrientation() === Orientation.Sud) {
-                this._orientation = Orientation.Est;
-            }
-        else if (this.getOrientation() === Orientation.Est) {
-                this._orientation = Orientation.Nord;
-            }
+        const orientations = [
+            Orientation.Nord,
+            Orientation.Ouest,
+            Orientation.Sud,
+            Orientation.Est
+        ];
+
+        // Trouve l'index de l'orientation actuelle et passe à l'orientation à gauche
+        const currentIndex = orientations.indexOf(this.getOrientation());
+        const newIndex = (currentIndex + 1) % orientations.length;
+
+        this._orientation = orientations[newIndex];
+
         return this;
     }
+
     /**
      * Fait tourner le Rover à droite de 90°.
      * @returns {this} - L'instance du Rover après avoir tourné à droite.
@@ -133,7 +142,11 @@ export class Rover implements IRover, IEtatRover {
                 deltaX = (order === Order.Avancer) ? -1 : 1;
                 break;
         }
-        this._coord= this._map.getNextCoord(new Coord(this._coord.x + deltaX, this._coord.y + deltaY));
+        const newCoord = new Coord(this._coord.x + deltaX, this._coord.y + deltaY);
+        if (this._map.isObstacle(newCoord)) {
+            return  this._coord;
+        }
+        this._coord= this._map.getNextCoord(newCoord);
     }
 }
 export namespace Rover {

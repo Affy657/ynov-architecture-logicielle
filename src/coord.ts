@@ -1,5 +1,5 @@
 /**
- * Classe clé valeur.
+ * Classe objet valeur.
  * Classe bas niveau.
  * Classe représentant des coordonnées.
  * @class
@@ -48,11 +48,12 @@ export default class Coord {
   }
 
   private verifyCoord(coord: number) {
-    if (!Number.isSafeInteger(coord)){
-      console.log("Coordonnée invalide, ces coordonnées doivent être des entiers positifs");
+    if (!Number.isSafeInteger(coord)) {
+      throw new Error("Coordonnée invalide, ces coordonnées doivent être des entiers positifs");
     }
-    return Number.isSafeInteger(coord);
+    return true;
   }
+
   /**
    * Is coord equal to another coord
    * @param {Coord} coord - The coord to compare
