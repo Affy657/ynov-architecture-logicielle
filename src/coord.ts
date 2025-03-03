@@ -1,5 +1,5 @@
 /**
- * Classe clé valeur.
+ * Classe objet valeur.
  * Classe bas niveau.
  * Classe représentant des coordonnées.
  * @class
@@ -40,19 +40,30 @@ export default class Coord {
    * @param {Coord} deltaCoord - Les coordonnées avec lesquelles calculer le modulo.
    */
   public modulo(deltaCoord: Coord): Coord {
-    return new Coord( this._x % deltaCoord.x, this._y % deltaCoord.y);
+    const moduloOperation = (num: number, mod: number) => {
+      const valeurRéduiteSignée = (num % mod) % -mod;
+      const valeurNonSignée = valeurRéduiteSignée + mod;
+      return valeurNonSignée % mod;
+    };
+
+    const newX = moduloOperation(this._x, deltaCoord.x);
+    const newY = moduloOperation(this._y, deltaCoord.y);
+
+    return new Coord(newX, newY);
   }
+
 
   private normalize(coord: number) {
     return Math.abs(Math.round(coord));
   }
 
   private verifyCoord(coord: number) {
-    if (!Number.isSafeInteger(coord)){
-      console.log("Coordonnée invalide, ces coordonnées doivent être des entiers positifs");
+    if (!Number.isSafeInteger(coord)) {
+      throw new Error("Coordonnée invalide, ces coordonnées doivent être des entiers positifs");
     }
-    return Number.isSafeInteger(coord);
+    return true;
   }
+
   /**
    * Is coord equal to another coord
    * @param {Coord} coord - The coord to compare

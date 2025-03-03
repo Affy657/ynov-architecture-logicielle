@@ -11,7 +11,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </p>
   </div>
 `
-const map = new Map(10, 10, [new Coord(0, 10)]);
-const rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map });
-const etat = rover.reculer();
-console.log(etat)
+const map = new Map(10, 10,);
+const rover = new Rover({ x: 0, y: 2, orientation: Orientation.Nord, map: map });
+rover.avancer();
+console.log('coucou');
