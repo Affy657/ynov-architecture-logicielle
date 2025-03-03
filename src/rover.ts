@@ -9,6 +9,7 @@ enum Order {
 
 /**
  * Classe entité représentant un Rover.
+ * Classe haut niveau.
  * @class
  * @classdesc Classe représentant un Rover.
  */

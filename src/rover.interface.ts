@@ -1,3 +1,4 @@
+// Haut niveau
 export interface IRover {
     avancer(): IEtatRover;
     reculer(): IEtatRover;

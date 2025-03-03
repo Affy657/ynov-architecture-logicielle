@@ -2,6 +2,7 @@ import Coord from "./coord";
 
 /**
  * Classe clé valeur.
+ * Classe bas niveau.
  * Classe représentant une carte.
  * @class
  * @classdesc Classe représentant une carte.

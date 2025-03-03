@@ -13,5 +13,5 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 const map = new Map(10, 10, [new Coord(0, 10)]);
 const rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map });
-const etat = rover.Reculer();
+const etat = rover.reculer();
 console.log(etat)

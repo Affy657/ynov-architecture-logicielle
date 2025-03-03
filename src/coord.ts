@@ -1,5 +1,6 @@
 /**
  * Classe clé valeur.
+ * Classe bas niveau.
  * Classe représentant des coordonnées.
  * @class
  * @classdesc Classe représentant des coordonnées.
