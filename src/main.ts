@@ -1,7 +1,6 @@
 import {Rover} from "./rover";
 import {Orientation} from "./rover.interface";
-import {Map} from "./map";
-import Coord from "./coord";
+import {RoverInterpreter} from "./roverInterpreter";
 
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -11,9 +10,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </p>
   </div>
 `
-const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
-const rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map });
-const positionY = rover.getPositionY();
-const positionX = rover.getPositionX();
-rover.avancer();
-console.log(positionY)
+const inputOptions = {
+    orientation: Orientation.Ouest,
+    x: 0,
+    y: 0,
+};
+const rover: Rover = new Rover(inputOptions);
+RoverInterpreter.interpreterCommands('a r g d', rover);
+console.log(rover.getPositionX(),rover.getPositionY(),rover.getOrientation())
