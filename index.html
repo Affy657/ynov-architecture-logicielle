@@ -1,13 +1,31 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<body>
+<div id="app">
+  <h1>Contrôlez le Rover</h1>
+  <input type="text" id="instructionInput" placeholder="Entrez une instruction pour le rover" />
+  <button id="sendButton">Envoyer l'instruction</button>
+</div>
+
+<script type="module">
+  import { io } from "socket.io-client";
+  const socket = io("http://localhost:3000");
+
+  // Fonction pour envoyer des instructions au serveur (au rover)
+  function sendInstructionToRover(instruction) {
+    socket.emit("sendInstruction", instruction);
+  }
+
+  // Recevoir la réponse du serveur (rover)
+  socket.on("roverResponse", (response) => {
+    alert("Réponse du rover: " + response);
+  });
+
+  // Gérer l'événement de clic pour envoyer une instruction
+  document.getElementById("sendButton").addEventListener("click", () => {
+    const instruction = document.getElementById("instructionInput").value;
+    sendInstructionToRover(instruction);
+  });
+</script>
+</body>
 </html>

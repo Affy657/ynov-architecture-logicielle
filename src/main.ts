@@ -1,20 +1,10 @@
-import {Rover} from "./rover";
-import {Orientation} from "./rover.interface";
-import {RoverInterpreter} from "./roverInterpreter";
+import { io } from 'socket.io-client';
 
+// Initialisation du client Socket.io
+const socket = io("http://localhost:3000");
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <p class="read-the-docs">
-      Hello world
-    </p>
-  </div>
-`
-const inputOptions = {
-    orientation: Orientation.Ouest,
-    x: 0,
-    y: 0,
-};
-const rover: Rover = new Rover(inputOptions);
-RoverInterpreter.interpreterCommands('a r g d', rover);
-console.log(rover.getPositionX(),rover.getPositionY(),rover.getOrientation())
+// Importation de la logique client spécifique
+import './client';
+
+// Autres initialisations ou logiques nécessaires
+console.log("Application démarrée...");

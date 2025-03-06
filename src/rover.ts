@@ -1,6 +1,7 @@
 import {IEtatRover, IRover, Orientation} from "./rover.interface";
 import {Map} from "./map";
 import Coord from "./coord";
+import {RoverServer} from "./server";
 
 enum Order {
     Avancer = "Avancer",
@@ -17,6 +18,7 @@ export class Rover implements IRover, IEtatRover {
     private _coord: Coord;
     private _orientation: Orientation;
     private readonly _map: Map;
+    private _server: RoverServer;
     /**
      * Constructeur de la classe Rover.
      * Initialise un Rover avec des options spécifiques.
@@ -37,6 +39,8 @@ export class Rover implements IRover, IEtatRover {
         }
         this._coord = this._map.getNextCoord(new Coord(options.x, options.y));
         this._orientation = options.orientation;
+        this._server = new RoverServer(this);
+        this._server.start();
     }
     /**
      * Retourne la position X du Rover.
