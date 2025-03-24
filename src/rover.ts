@@ -18,7 +18,7 @@ export class Rover implements IRover, IEtatRover {
     private _coord: Coord;
     private _orientation: Orientation;
     private readonly _map: Map;
-    private _server: RoverServer;
+    private _server: RoverServer | undefined;
     /**
      * Constructeur de la classe Rover.
      * Initialise un Rover avec des options spécifiques.
@@ -32,6 +32,7 @@ export class Rover implements IRover, IEtatRover {
         options ??= {};
         options.x ??= 0;
         options.y ??= 0;
+        options.isunittest ??= false;
         options.orientation ??= Orientation.Nord;
         this._map = options.map ?? new Map(10, 10);
         if ( this._map.isObstacle(new Coord(options.x, options.y))) {
@@ -39,8 +40,10 @@ export class Rover implements IRover, IEtatRover {
         }
         this._coord = this._map.getNextCoord(new Coord(options.x, options.y));
         this._orientation = options.orientation;
-        this._server = new RoverServer(this);
-        this._server.start();
+        if(options.isunittest === false){
+            this._server = new RoverServer(this);
+            this._server.start();
+        }
     }
     /**
      * Retourne la position X du Rover.
@@ -163,6 +166,7 @@ export namespace Rover {
          * Si non spécifiée, une carte de taille 10x10 sera utilisée par défaut.
          */
         map?: Map;
+        isunittest?:boolean;
     }
 }
 

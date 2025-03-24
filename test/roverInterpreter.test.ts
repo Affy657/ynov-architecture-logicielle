@@ -17,10 +17,11 @@ describe('RoverInterpreter tests', () => {
         expect(etat.getOrientation()).toBe(expectedOptions.orientation);
     };
 
-    const inputOptions: Pos = {
+    const inputOptions: Rover.Options = {
         orientation: Orientation.Ouest,
         x: 0,
         y: 0,
+        isunittest: true
     };
 
     test('Interpréter une séquence de commandes "a r g d" sur Rover', () => {
@@ -53,22 +54,25 @@ describe('RoverInterpreter tests', () => {
 
     test('Tester un rover qui se déplace vers un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 1)]);
-        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map });
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map, isunittest:true });
         RoverInterpreter.interpreterCommands('a a', rover);
         const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Nord };
         basicTest(rover, expectedOptions);
     });
 
     test('Essayer de déplacer un rover au bord de la carte', () => {
-        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10) });
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10), isunittest:true });
         RoverInterpreter.interpreterCommands('a a a a', rover);
         const expectedOptions: Pos = { x: 0, y: 4, orientation: Orientation.Nord };
         basicTest(rover, expectedOptions);
     });
 
-    test('Vérifier qu\'une commande inconnue ne modifie pas l\'état du Rover', () => {
+    test('Vérifier qu\'une commande inconnue ne modifie pas l\'état du Rover et logge l\'erreur', () => {
         const rover: Rover = new Rover(inputOptions);
-        const initialState = { x: rover.getPositionX(), y: rover.getPositionY(), orientation: rover.getOrientation() };
-        expect(() =>RoverInterpreter.interpreterCommands('a x r', rover)).toThrow("Commande inconnue: x");
+        const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+        expect(() => RoverInterpreter.interpreterCommands('a x r', rover)).not.toThrow();
+        expect(consoleSpy).toHaveBeenCalledWith("Commande inconnue: x");
+        consoleSpy.mockRestore();
     });
+
 });

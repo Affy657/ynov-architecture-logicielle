@@ -1,4 +1,4 @@
-import { IRover } from "./rover.interface";
+import {Rover} from "./rover";
 
 /**
  * Classe interprète pour interpréter une séquence de commandes et exécuter les actions sur un Rover.
@@ -11,12 +11,11 @@ export class RoverInterpreter {
      * @param {string} commands - La chaîne de commandes à interpréter.
      * @param {IRover} rover - L'instance du Rover sur lequel les commandes seront exécutées.
      */
-    public static interpreterCommands(commands: string, rover: IRover): void {
-        // If the commands contain spaces, split them into an array
-        // If not, treat the entire string as a single continuous sequence of commands
+    public static interpreterCommands(commands: string, rover: Rover): string {
+        const initialPosition = { x: rover.getPositionX(), y: rover.getPositionY() };
         const commandsArray = commands.includes(' ')
             ? commands.split(' ')
-            : [...commands]; // Spread the string into individual characters
+            : [...commands];
 
         for (let command of commandsArray) {
             switch (command.toLowerCase()) {
@@ -33,8 +32,9 @@ export class RoverInterpreter {
                     rover.tournerADroite();
                     break;
                 default:
-                    throw new Error(`Commande inconnue: ${command}`);
+                   console.log(`Commande inconnue: ${command}`);
             }
         }
+        return 'Position initiale: ' + JSON.stringify(initialPosition) + ', Position finale: ' + JSON.stringify({ x: rover.getPositionX(), y: rover.getPositionY() });
     }
 }

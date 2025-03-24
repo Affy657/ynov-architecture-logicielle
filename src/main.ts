@@ -1,10 +1,9 @@
 import { io } from 'socket.io-client';
-
-// Initialisation du client Socket.io
 const socket = io("http://localhost:3000");
-
-// Importation de la logique client spécifique
 import './client';
+import {RoverInterpreter} from "./roverInterpreter";
+import {Rover} from "./rover";
 
-// Autres initialisations ou logiques nécessaires
+const rover = new Rover({ x: 0, y: 0, orientation: 0 });
+console.log(RoverInterpreter.interpreterCommands('a', rover))
 console.log("Application démarrée...");
