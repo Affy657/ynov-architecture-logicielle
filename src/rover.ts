@@ -93,12 +93,9 @@ export class Rover implements IRover, IEtatRover {
             Orientation.Sud,
             Orientation.Est
         ];
-
         const currentIndex = orientations.indexOf(this.getOrientation());
         const newIndex = (currentIndex + 1) % orientations.length;
-
         this._orientation = orientations[newIndex];
-
         return this;
     }
 

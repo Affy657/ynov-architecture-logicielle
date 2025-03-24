@@ -1,10 +1,131 @@
 <!doctype html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrôlez le Rover</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    #app {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #4A90E2;
+    }
+
+    .legend {
+      margin: 20px 0;
+      font-size: 16px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .legend span {
+      font-weight: bold;
+      color: #4A90E2;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #4A90E2;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #357ABD;
+    }
+
+    button:disabled {
+      background-color: #B0C4DE;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #4A90E2;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading {
+      display: inline-block;
+    }
+
+    .response-message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #4A90E2;
+      font-weight: bold;
+    }
+  </style>
+</head>
 <body>
+
 <div id="app">
   <h1>Contrôlez le Rover</h1>
+
+  <!-- Légende des commandes -->
+  <div class="legend">
+    <p><span>R</span> : Reculer</p>
+    <p><span>A</span> : Avancer</p>
+    <p><span>D</span> : Tourner à droite</p>
+    <p><span>G</span> : Tourner à gauche</p>
+  </div>
+
   <input type="text" id="instructionInput" placeholder="Entrez une instruction pour le rover" />
-  <button id="sendButton">Envoyer l'instruction</button>
+  <button id="sendButton">
+    <span class="spinner" id="loadingSpinner"></span>
+    Envoyer l'instruction
+  </button>
+  <div class="response-message" id="responseMessage"></div>
 </div>
 
 <script type="module">
@@ -18,14 +139,26 @@
 
   // Recevoir la réponse du serveur (rover)
   socket.on("roverResponse", (response) => {
-    alert("Réponse du rover: " + response);
+    document.getElementById("responseMessage").innerText = "Réponse du rover: " + response;
+    document.getElementById("loadingSpinner").style.display = 'none'; // Hide the spinner
+    document.getElementById("sendButton").disabled = false; // Enable the button
   });
 
   // Gérer l'événement de clic pour envoyer une instruction
   document.getElementById("sendButton").addEventListener("click", () => {
     const instruction = document.getElementById("instructionInput").value;
+
+    if (!instruction.trim()) {
+      alert("Veuillez entrer une instruction.");
+      return;
+    }
+
+    document.getElementById("sendButton").disabled = true; // Disable the button to prevent double click
+    document.getElementById("loadingSpinner").style.display = 'inline-block'; // Show the spinner
+
     sendInstructionToRover(instruction);
   });
 </script>
+
 </body>
 </html>
