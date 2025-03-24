@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
-import cors from "cors";  // Importer le middleware CORS
+import cors from "cors";
 import { RoverInterpreter } from "./roverInterpreter";
 import {Rover} from "./rover";
 
@@ -43,8 +43,6 @@ export class RoverServer {
                 socket.emit("roverResponse", roverResponse);
                 console.log(`Réponse envoyée au client: ${roverResponse}`);
             });
-
-            // Gérer la déconnexion du client
             socket.on("disconnect", () => {
                 console.log("Un client s'est déconnecté");
             });
