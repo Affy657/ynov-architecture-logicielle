@@ -1,5 +1,5 @@
 import {Orientation} from "../src/rover.interface";
-import {Rover} from "../src/rover";
+import {Rover} from "../src/Rover";
 import { Map } from "../src/map";
 import Coord from "../src/coord";
 

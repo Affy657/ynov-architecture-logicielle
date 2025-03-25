@@ -1,5 +1,5 @@
 import { RoverInterpreter } from "../src/roverInterpreter";
-import { Rover } from "../src/rover";
+import { Rover } from "../src/Rover";
 import { Orientation } from "../src/rover.interface";
 import { Map } from "../src/map";
 import Coord from "../src/coord";

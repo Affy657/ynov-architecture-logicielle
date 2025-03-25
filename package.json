@@ -2,12 +2,12 @@
   "name": "ynov-architecture-logicielle",
   "version": "1.0.0",
   "description": "Membres :\r Florentin Portets\r Adrien Morand\r Eliot Guihal\r Charles Gauthier\r Rayane Guemmoud\r YOUHOUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUu",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "jest",
-    "start": "ts-node src/network.ts"
+    "start": "ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
@@ -34,8 +34,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "ts-node-dev": "^2.0.0"
   }
 }

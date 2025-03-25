@@ -1,7 +1,8 @@
 import { IEtatRover, IRover, Orientation } from "./rover.interface";
 import { Map } from "./map";
 import Coord from "./coord";
-import { RoverServer } from "./server";
+import RoverInterpreter from './roverInterpreter';
+import NetworkHandler, { type CommandFeedback, type ServerHandler } from './NetworkHandler';
 
 enum Order {
     Avancer = "Avancer",
@@ -14,11 +15,12 @@ enum Order {
  * @class
  * @classdesc Classe représentant un Rover.
  */
-export class Rover implements IRover, IEtatRover {
+export default class Rover implements IRover, IEtatRover {
     private _coord: Coord;
     private _orientation: Orientation;
     private _map: Map;
-    private _server: RoverServer | undefined;
+    private readonly _serverHandler: ServerHandler = NetworkHandler.createServerHandler();
+    private readonly _roverInterpreter: RoverInterpreter = new RoverInterpreter(this);
 
     /**
      * Constructeur de la classe Rover.
@@ -40,10 +42,18 @@ export class Rover implements IRover, IEtatRover {
         }
         this._coord = this._map.getNextCoord(coord);
         this._orientation = options.orientation ?? Orientation.Nord;
-        if (options.isunittest === false) {
-            this._server = new RoverServer(this);
-            this._server.start();
-        }
+
+        console.log('Rover created at', this._coord, 'with orientation', this._orientation);
+
+        this._serverHandler.onObstacles(this._roverInterpreter.interpreterObstacle.bind(this._roverInterpreter));
+        this._serverHandler.onCommand((CommandFeedback: CommandFeedback) => {
+          this._roverInterpreter.interpreterCommands(CommandFeedback.cmd);
+          CommandFeedback.feedback({
+            x: this.getPositionX(),
+            y: this.getPositionY(),
+            orientation: this.getOrientation()
+          });
+        });
     }
 
     /**

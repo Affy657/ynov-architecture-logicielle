@@ -3,7 +3,7 @@ import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import cors from "cors";
 import { RoverInterpreter } from "./roverInterpreter";
-import { Rover } from "./rover";
+import { Rover } from "./Rover";
 import Coord from "./coord";
 
 export class RoverServer {
