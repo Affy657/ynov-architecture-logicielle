@@ -41,6 +41,53 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
+
+    #obstaclePopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .popup-content input {
+      margin-bottom: 10px;
+    }
+
+    .popup-content button {
+      margin-top: 10px;
+    }
+
+    .legend {
+      margin: 20px 0;
+      font-size: 16px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .legend span {
+      font-weight: bold;
+      color: #4A90E2;
+    }
+
+    .response-message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #4A90E2;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -67,22 +114,43 @@
 
 <canvas id="roverCanvas" width="500" height="500"></canvas>
 
+<!-- Popup for setting obstacles -->
+<div id="obstaclePopup">
+  <div class="popup-content">
+    <h2>Définissez les obstacles</h2>
+    <p>Entrez les coordonnées des obstacles sous la forme x,y (par exemple 2,3) :</p>
+    <input type="text" id="obstacleInput" placeholder="Entrez coordonnées" />
+    <button id="addObstacleButton">Ajouter obstacle</button>
+    <button id="submitObstaclesButton" disabled>Valider les obstacles</button>
+  </div>
+</div>
+
 <script type="module">
   import { io } from "socket.io-client";
   const socket = io("http://localhost:3000");
 
+  let obstacles = [];
+
+  // Mapping à partir de l'énumération Orientation
   const directionIcons = {
-    "Nord": "⬆️",
-    "Sud": "⬇️",
-    "Est": "➡️",
-    "Ouest": "⬅️"
+    0: "⬆️", // Nord
+    1: "⬇️", // Sud
+    2: "➡️", // Est
+    3: "⬅️"  // Ouest
   };
 
   const canvas = document.getElementById("roverCanvas");
   const ctx = canvas.getContext("2d");
   const gridSize = 10;
   const cellSize = canvas.width / gridSize;
-  let rover = { x: 0, y: 0 , orientation: "north" };
+  // Position et orientation initiales du rover (orientation sous forme de nombre)
+  let rover = { x: 0, y: 0, orientation: 1 };
+
+  // Fonction pour récupérer l'icône en fonction de l'orientation numérique
+  function getDirectionIcon(orientation) {
+    console.log(orientation);
+    return directionIcons[Number(orientation)] || "❓";
+  }
 
   function drawGrid() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -95,12 +163,26 @@
       ctx.strokeStyle = "#ddd";
       ctx.stroke();
     }
+    drawObstacles();
     drawRover();
   }
 
+  // Utilisation de fillText pour afficher l'icône du rover avec l'orientation normalisée
   function drawRover() {
-    ctx.fillStyle = directionIcons[rover.orientation] || "❓";
-    ctx.fillRect(rover.x * cellSize, rover.y * cellSize, cellSize, cellSize);
+    ctx.font = `${cellSize * 0.8}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const arrow = getDirectionIcon(rover.orientation);
+    ctx.fillText(arrow, rover.x * cellSize + cellSize / 2, rover.y * cellSize + cellSize / 2);
+  }
+
+  function drawObstacles() {
+    ctx.fillStyle = "red";
+    obstacles.forEach(obstacle => {
+      ctx.beginPath();
+      ctx.arc(obstacle.x * cellSize + cellSize / 2, obstacle.y * cellSize + cellSize / 2, cellSize / 3, 0, 2 * Math.PI);
+      ctx.fill();
+    });
   }
 
   function updateRoverPosition(x, y, orientation) {
@@ -116,6 +198,34 @@
     document.getElementById("roverPosition").innerText = `Rover position: (${x}, ${y})`;
     document.getElementById("responseMessage").innerText = "Réponse du rover reçue !";
     updateRoverPosition(x, y, orientation);
+  });
+
+  // Affichage du popup de configuration des obstacles dès la connexion
+  socket.on('connect', () => {
+    document.getElementById('obstaclePopup').style.display = 'flex';
+  });
+
+  document.getElementById('addObstacleButton').addEventListener('click', () => {
+    const obstacleInput = document.getElementById('obstacleInput').value;
+    const [x, y] = obstacleInput.split(',').map(Number);
+
+    if (isNaN(x) || isNaN(y)) {
+      alert("Coordonnées invalides !");
+      return;
+    }
+
+    obstacles.push({ x, y });
+    document.getElementById('obstacleInput').value = '';
+    alert(`Obstacle ajouté à (${x}, ${y})`);
+
+    // Activation du bouton de validation si au moins un obstacle est présent
+    document.getElementById('submitObstaclesButton').disabled = obstacles.length === 0;
+  });
+
+  document.getElementById('submitObstaclesButton').addEventListener('click', () => {
+    socket.emit('setObstacles', obstacles);
+    document.getElementById('obstaclePopup').style.display = 'none';
+    drawGrid();
   });
 
   document.getElementById("sendButton").addEventListener("click", () => {

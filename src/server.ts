@@ -45,9 +45,13 @@ export class RoverServer {
                 console.log(`Réponse envoyée au client: ${roverResponse}`);
             });
 
-            socket.on("setObstacles", (obstacles: Coord[]) => {
+            socket.on("setObstacles", (obstacles: [{x:number,y:number}]) => {
                 console.log("Obstacles reçus:", obstacles);
-                RoverInterpreter.setObstacles(obstacles, this._rover);
+                const arr: Coord[] = [];
+                obstacles.forEach((obstacle) => {
+                    arr.push(new Coord(obstacle.x, obstacle.y));
+                })
+                RoverInterpreter.setObstacles(arr, this._rover);
             });
 
             socket.on("disconnect", () => {

@@ -5,11 +5,6 @@ import Coord from "./coord";
 // Logique de communication avec le serveur
 const socket = io("http://localhost:3000");
 
-// Fonction pour envoyer les obstacles au serveur
-function setObstacles(obstacles: Coord[]): void {
-    socket.emit("setObstacles", obstacles);
-}
-
 // Fonction pour envoyer des instructions au rover
 function sendInstructionToRover(instruction: string): void {
     socket.emit("sendInstruction", instruction);
