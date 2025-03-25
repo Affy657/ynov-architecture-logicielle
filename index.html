@@ -144,7 +144,7 @@
   const gridSize = 10;
   const cellSize = canvas.width / gridSize;
   // Position et orientation initiales du rover (orientation sous forme de nombre)
-  let rover = { x: 0, y: 0, orientation: 1 };
+  let rover = { x: 0, y: 0, orientation: 0 };
 
   // Fonction pour récupérer l'icône en fonction de l'orientation numérique
   function getDirectionIcon(orientation) {
@@ -216,7 +216,6 @@
 
     obstacles.push({ x, y });
     document.getElementById('obstacleInput').value = '';
-    alert(`Obstacle ajouté à (${x}, ${y})`);
 
     // Activation du bouton de validation si au moins un obstacle est présent
     document.getElementById('submitObstaclesButton').disabled = obstacles.length === 0;
