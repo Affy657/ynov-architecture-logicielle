@@ -94,8 +94,6 @@
 
 <div id="app">
   <h1>Contrôlez le Rover</h1>
-
-  <!-- Légende des commandes -->
   <div class="legend">
     <p><span>R</span> : Reculer</p>
     <p><span>A</span> : Avancer</p>
@@ -114,7 +112,6 @@
 
 <canvas id="roverCanvas" width="500" height="500"></canvas>
 
-<!-- Popup for setting obstacles -->
 <div id="obstaclePopup">
   <div class="popup-content">
     <h2>Définissez les obstacles</h2>
@@ -130,8 +127,6 @@
   const socket = io("http://localhost:3000");
 
   let obstacles = [];
-
-  // Mapping à partir de l'énumération Orientation
   const directionIcons = {
     0: "⬆️", // Nord
     1: "⬇️", // Sud
@@ -143,10 +138,8 @@
   const ctx = canvas.getContext("2d");
   const gridSize = 10;
   const cellSize = canvas.width / gridSize;
-  // Position et orientation initiales du rover (orientation sous forme de nombre)
   let rover = { x: 0, y: 0, orientation: 0 };
 
-  // Fonction pour récupérer l'icône en fonction de l'orientation numérique
   function getDirectionIcon(orientation) {
     console.log(orientation);
     return directionIcons[Number(orientation)] || "❓";
@@ -167,7 +160,6 @@
     drawRover();
   }
 
-  // Utilisation de fillText pour afficher l'icône du rover avec l'orientation normalisée
   function drawRover() {
     ctx.font = `${cellSize * 0.8}px Arial`;
     ctx.textAlign = "center";
@@ -200,7 +192,6 @@
     updateRoverPosition(x, y, orientation);
   });
 
-  // Affichage du popup de configuration des obstacles dès la connexion
   socket.on('connect', () => {
     document.getElementById('obstaclePopup').style.display = 'flex';
   });
@@ -217,7 +208,6 @@
     obstacles.push({ x, y });
     document.getElementById('obstacleInput').value = '';
 
-    // Activation du bouton de validation si au moins un obstacle est présent
     document.getElementById('submitObstaclesButton').disabled = obstacles.length === 0;
   });
 
