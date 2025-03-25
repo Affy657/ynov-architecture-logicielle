@@ -160,7 +160,7 @@ export class Rover implements IRover, IEtatRover {
                 break;
         }
         const newCoord = new Coord(this._coord.x + deltaX, this._coord.y + deltaY);
-        if (this._map.isObstacle(newCoord)) {
+        if (this._map.isObstacle(this._map.getNextCoord(newCoord))) {
             return  this._coord;
         }
         this._coord = this._map.getNextCoord(newCoord);

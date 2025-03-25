@@ -17,7 +17,7 @@ export class RoverServer {
         this._server = http.createServer(this._app);
         this._io = new SocketIOServer(this._server, {
             cors: {
-                origin: 'http://localhost:5174',
+                origin: 'http://localhost:5173',
                 methods: ['GET', 'POST'],
                 allowedHeaders: ['Content-Type'],
             }
