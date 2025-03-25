@@ -8,9 +8,9 @@ import Coord from "./coord";
  * @classdesc Classe représentant une carte.
  */
 export class Map  {
-    private readonly maxCoord: Coord;
-    private readonly minCoord: Coord;
-    private readonly obstacles: Coord[];
+    private _maxCoord: Coord;
+    private _minCoord: Coord;
+    private _obstacles: Coord[];
 
     /**
      * Constructeur de la classe Map.
@@ -20,9 +20,9 @@ export class Map  {
      * @param {Coord[]?} obstacles - Les coordonnées des obstacles sur la carte (optionnel, valeur par défaut : []).
      */
     constructor(x: number, y: number, obstacles?: Coord[]) {
-        this.maxCoord = new Coord(x, y);
-        this.minCoord = new Coord(0, 0);
-        this.obstacles = obstacles ?? [];
+        this._maxCoord = new Coord(x, y);
+        this._minCoord = new Coord(0, 0);
+        this._obstacles = obstacles ?? [];
     }
 
     /**
@@ -30,7 +30,7 @@ export class Map  {
      * @returns {number} - La largeur maximale de la carte.
      */
     public getMaxX(): number {
-        return this.maxCoord.x;
+        return this._maxCoord.x;
     }
 
     /**
@@ -38,7 +38,7 @@ export class Map  {
      * @returns {number} - La hauteur maximale de la carte.
      */
     public getMaxY(): number {
-        return this.maxCoord.y;
+        return this._maxCoord.y;
     }
 
     /**
@@ -46,11 +46,19 @@ export class Map  {
      * @param {Coord} coord - The current coord
      */
     public getNextCoord(coord: Coord) {
-        const newCoord = coord.modulo(this.maxCoord);
+        const newCoord = coord.modulo(this._maxCoord);
         return newCoord;
     }
 
     public isObstacle(coord: Coord): boolean {
-        return this.obstacles.some((obstacle) => obstacle.equals(coord));
+        return this._obstacles.some((obstacle) => obstacle.equals(coord));
+    }
+
+    public setObstacles(coord: Coord[]): void {
+        this._obstacles = coord;
+    }
+
+    public getObstacles(): Coord[] {
+        return this._obstacles;
     }
 }

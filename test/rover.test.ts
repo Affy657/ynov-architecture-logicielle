@@ -192,13 +192,13 @@ describe('Rover avance', () => {
 
     test('Instancier un rover sur un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
-        expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map, isunittest:true })).toThrow("Rover cannot be placed on an obstacle");
+        expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map, isunittest: true })).toThrow("Rover cannot be placed on an obstacle");
     });
 
     test('reculer vers un obstacle en dehors de la map', () => {
         const map = new Map(10, 10, [new Coord(0, 10)]);
-        const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map, isunittest:true });
-        expect(rover.reculer()).toBe(rover);// No errors here
+        const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map, isunittest: true });
+        expect(rover.reculer()).toBe(rover);
     });
 });
 

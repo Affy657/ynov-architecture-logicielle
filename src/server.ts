@@ -1,11 +1,12 @@
+// roverServer.ts
 import express from "express";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import cors from "cors";
 import { RoverInterpreter } from "./roverInterpreter";
-import {Rover} from "./rover";
+import { Rover } from "./rover";
+import Coord from "./coord";
 
-// Définition de la classe qui gère le serveur
 export class RoverServer {
     private _app: express.Express;
     private _server: http.Server;
@@ -17,32 +18,38 @@ export class RoverServer {
         this._server = http.createServer(this._app);
         this._io = new SocketIOServer(this._server, {
             cors: {
-                origin: 'http://localhost:5173',
+                origin: 'http://localhost:5174',
                 methods: ['GET', 'POST'],
                 allowedHeaders: ['Content-Type'],
-            }});
+            }
+        });
         this._rover = rover;
 
         this._app.use(cors());
         this.setupSocketEvents();
     }
 
-    // Méthode pour simuler l'envoi d'instructions au rover
     private sendToRover(instruction: string): string {
         console.log(`Envoi de l'instruction au rover: ${instruction}`);
         return RoverInterpreter.interpreterCommands(instruction, this._rover);
     }
 
-    // Méthode pour configurer les événements Socket.IO
     private setupSocketEvents(): void {
         this._io.on("connection", (socket) => {
             console.log("Un client est connecté");
+
             socket.on("sendInstruction", (instruction: string) => {
                 console.log(`Instruction reçue du client: ${instruction}`);
                 const roverResponse = this.sendToRover(instruction);
                 socket.emit("roverResponse", roverResponse);
                 console.log(`Réponse envoyée au client: ${roverResponse}`);
             });
+
+            socket.on("setObstacles", (obstacles: Coord[]) => {
+                console.log("Obstacles reçus:", obstacles);
+                RoverInterpreter.setObstacles(obstacles, this._rover);
+            });
+
             socket.on("disconnect", () => {
                 console.log("Un client s'est déconnecté");
             });

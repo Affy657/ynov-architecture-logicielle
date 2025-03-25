@@ -1,4 +1,5 @@
 import {Rover} from "./rover";
+import Coord from "./coord";
 
 /**
  * Classe interprète pour interpréter une séquence de commandes et exécuter les actions sur un Rover.
@@ -36,5 +37,8 @@ export class RoverInterpreter {
             }
         }
         return 'Position initiale: ' + JSON.stringify(initialPosition) + ', Position finale: ' + JSON.stringify({ x: rover.getPositionX(), y: rover.getPositionY() });
+    }
+    public static setObstacles(obstacles: Coord[], rover: Rover): void {
+        rover.setObstacles(obstacles);
     }
 }

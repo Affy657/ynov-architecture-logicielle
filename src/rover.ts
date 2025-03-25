@@ -1,7 +1,7 @@
-import {IEtatRover, IRover, Orientation} from "./rover.interface";
-import {Map} from "./map";
+import { IEtatRover, IRover, Orientation } from "./rover.interface";
+import { Map } from "./map";
 import Coord from "./coord";
-import {RoverServer} from "./server";
+import { RoverServer } from "./server";
 
 enum Order {
     Avancer = "Avancer",
@@ -17,8 +17,9 @@ enum Order {
 export class Rover implements IRover, IEtatRover {
     private _coord: Coord;
     private _orientation: Orientation;
-    private readonly _map: Map;
+    private _map: Map;
     private _server: RoverServer | undefined;
+
     /**
      * Constructeur de la classe Rover.
      * Initialise un Rover avec des options spécifiques.
@@ -29,22 +30,22 @@ export class Rover implements IRover, IEtatRover {
      * @param {Map} options.map - La carte sur laquelle le Rover évolue (optionnelle, valeur par défaut : une carte 10x10).
      */
     constructor(options: Rover.Options) {
-        options ??= {};
         options.x ??= 0;
         options.y ??= 0;
         options.isunittest ??= false;
-        options.orientation ??= Orientation.Nord;
         this._map = options.map ?? new Map(10, 10);
-        if ( this._map.isObstacle(new Coord(options.x, options.y))) {
+        const coord = new Coord( options.x, options.y);
+        if (this._map.isObstacle(coord)) {
             throw new Error("Rover cannot be placed on an obstacle");
         }
-        this._coord = this._map.getNextCoord(new Coord(options.x, options.y));
-        this._orientation = options.orientation;
-        if(options.isunittest === false){
+        this._coord = this._map.getNextCoord(coord);
+        this._orientation = options.orientation ?? Orientation.Nord;
+        if (options.isunittest === false) {
             this._server = new RoverServer(this);
             this._server.start();
         }
     }
+
     /**
      * Retourne la position X du Rover.
      * @returns {number} - La position X actuelle du Rover.
@@ -52,6 +53,7 @@ export class Rover implements IRover, IEtatRover {
     public getPositionX(): number {
         return this._coord.x;
     }
+
     /**
      * Retourne la position Y du Rover.
      * @returns {number} - La position Y actuelle du Rover.
@@ -59,6 +61,7 @@ export class Rover implements IRover, IEtatRover {
     public getPositionY(): number {
         return this._coord.y;
     }
+
     /**
      * Retourne l'orientation actuelle du Rover.
      * @returns {Orientation} - L'orientation actuelle du Rover.
@@ -66,6 +69,26 @@ export class Rover implements IRover, IEtatRover {
     public getOrientation(): Orientation {
         return this._orientation;
     }
+
+    /**
+     * Retourne les obstacles actuels du Rover.
+     * @returns {Coord[]} - Les options actuelles du Rover.
+     */
+    public getObstacles(): Coord[] {
+        return this._map.getObstacles();
+    }
+
+    /**
+     * Définit les nouveaux obstacles du Rover.
+     * @param {Coord[]} obstacles - Les nouveaux obstacles de la map pour le Rover.
+     */
+    public setObstacles(obstacles: Coord[]): void {
+        this._map.setObstacles(obstacles);
+        if ( this._map.isObstacle(this._coord)) {
+            throw new Error("Obstacles cannot be placed on the rover");
+        };
+    }
+
     /**
      * Fait avancer le Rover dans sa direction actuelle.
      * @returns {this} - L'instance du Rover après avoir avancé.
@@ -74,6 +97,7 @@ export class Rover implements IRover, IEtatRover {
         this.move(Order.Avancer);
         return this;
     }
+
     /**
      * Fait reculer le Rover dans sa direction actuelle.
      * @returns {this} - L'instance du Rover après avoir reculé.
@@ -82,6 +106,7 @@ export class Rover implements IRover, IEtatRover {
         this.move(Order.Reculer);
         return this;
     }
+
     /**
      * Fait tourner le Rover à gauche de 90°.
      * @returns {this} - L'instance du Rover après avoir tourné à gauche.
@@ -138,9 +163,10 @@ export class Rover implements IRover, IEtatRover {
         if (this._map.isObstacle(newCoord)) {
             return  this._coord;
         }
-        this._coord= this._map.getNextCoord(newCoord);
+        this._coord = this._map.getNextCoord(newCoord);
     }
 }
+
 export namespace Rover {
     export type Options = {
         /**
@@ -163,7 +189,6 @@ export namespace Rover {
          * Si non spécifiée, une carte de taille 10x10 sera utilisée par défaut.
          */
         map?: Map;
-        isunittest?:boolean;
+        isunittest?: boolean;
     }
 }
-
