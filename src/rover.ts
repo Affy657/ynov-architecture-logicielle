@@ -122,10 +122,10 @@ export class Rover implements IRover, IEtatRover {
 
         switch (this._orientation) {
             case Orientation.Nord :
-                deltaY = (order === Order.Avancer) ? 1 : -1;
+                deltaY = (order === Order.Avancer) ? -1 : 1;
                 break;
             case Orientation.Sud:
-                deltaY = (order === Order.Avancer) ? -1 : 1;
+                deltaY = (order === Order.Avancer) ? 1 : -1;
                 break;
             case Orientation.Est:
                 deltaX = (order === Order.Avancer) ? 1 : -1;

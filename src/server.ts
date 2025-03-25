@@ -28,7 +28,7 @@ export class RoverServer {
     }
 
     // Méthode pour simuler l'envoi d'instructions au rover
-    private sendToRover(instruction: string): string {
+    private sendToRover(instruction: string): object {
         console.log(`Envoi de l'instruction au rover: ${instruction}`);
         return RoverInterpreter.interpreterCommands(instruction, this._rover);
     }
