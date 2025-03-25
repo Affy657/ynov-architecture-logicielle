@@ -145,9 +145,9 @@ describe('Rover avance', () => {
     })
 
     test('avancer at the map edge (top)', () => {
-        const rover: Rover = new Rover({ x: 0, y: 9, orientation: Orientation.Nord, map: new Map(10, 10), isunittest:true });
+        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10), isunittest:true });
         const etat = rover.avancer();
-        const expectedOptions: Rover.Options = { x: 0, y: 0, orientation: Orientation.Nord };
+        const expectedOptions: Rover.Options = { x: 0, y: 9, orientation: Orientation.Nord };
         basicTest(etat, expectedOptions);
     });
 
@@ -159,9 +159,9 @@ describe('Rover avance', () => {
     });
 
     test('avancer at the map edge (bottom)', () => {
-        const rover: Rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: new Map(10, 10), isunittest:true });
+        const rover: Rover = new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: new Map(10, 10), isunittest:true });
         const etat = rover.avancer();
-        const expectedOptions: Rover.Options = { x: 0, y: 9, orientation: Orientation.Sud };
+        const expectedOptions: Rover.Options = { x: 0, y: 0, orientation: Orientation.Sud };
         basicTest(etat, expectedOptions);
     });
 
@@ -174,7 +174,7 @@ describe('Rover avance', () => {
 
     test('avancer with multiple obstacles', () => {
         const map = new Map(10, 10, [new Coord(0, 1), new Coord(0, 2)]);
-        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map, isunittest:true });
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: map, isunittest:true });
         const positionY = rover.getPositionY();
         const positionX = rover.getPositionX();
         expect( rover.avancer().getPositionY()).toBe(positionY);
@@ -183,7 +183,7 @@ describe('Rover avance', () => {
 
     test('reculer with obstacles blocking the way', () => {
         const map = new Map(10, 10, [new Coord(0, 9)]);
-        const rover = new Rover({ x: 0, y: 8, orientation: Orientation.Sud, map: map, isunittest:true });
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: map, isunittest:true });
         const positionY = rover.getPositionY();
         const positionX = rover.getPositionX();
         expect( rover.reculer().getPositionY()).toBe(positionY);

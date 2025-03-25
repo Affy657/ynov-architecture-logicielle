@@ -48,22 +48,22 @@ describe('RoverInterpreter tests', () => {
     test('Interpréter une séquence de commandes avec des orientations multiples', () => {
         const rover: Rover = new Rover(inputOptions);
         RoverInterpreter.interpreterCommands('d d a g r', rover);
-        const expectedOptions: Pos = { x: 1, y: 9, orientation: Orientation.Nord };
+        const expectedOptions: Pos = { x: 1, y: 1, orientation: Orientation.Nord };
         basicTest(rover, expectedOptions);
     });
 
     test('Tester un rover qui se déplace vers un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 1)]);
-        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: map, isunittest:true });
+        const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: map, isunittest:true });
         RoverInterpreter.interpreterCommands('a a', rover);
-        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Nord };
+        const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Sud };
         basicTest(rover, expectedOptions);
     });
 
     test('Essayer de déplacer un rover au bord de la carte', () => {
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10), isunittest:true });
         RoverInterpreter.interpreterCommands('a a a a', rover);
-        const expectedOptions: Pos = { x: 0, y: 4, orientation: Orientation.Nord };
+        const expectedOptions: Pos = { x: 0, y: 6, orientation: Orientation.Nord };
         basicTest(rover, expectedOptions);
     });
 
