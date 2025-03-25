@@ -12,7 +12,7 @@ export class RoverInterpreter {
      * @param {string} commands - La chaîne de commandes à interpréter.
      * @param {IRover} rover - L'instance du Rover sur lequel les commandes seront exécutées.
      */
-    public static interpreterCommands(commands: string, rover: Rover): string {
+    public static interpreterCommands(commands: string, rover: Rover): object {
         const initialPosition = { x: rover.getPositionX(), y: rover.getPositionY() };
         const commandsArray = commands.includes(' ')
             ? commands.split(' ')
@@ -36,7 +36,12 @@ export class RoverInterpreter {
                    console.log(`Commande inconnue: ${command}`);
             }
         }
-        return 'Position initiale: ' + JSON.stringify(initialPosition) + ', Position finale: ' + JSON.stringify({ x: rover.getPositionX(), y: rover.getPositionY() });
+        return {
+            x: rover.getPositionX(),
+            y: rover.getPositionY(),
+            orientation: rover.getOrientation()
+        };
+
     }
     public static setObstacles(obstacles: Coord[], rover: Rover): void {
         rover.setObstacles(obstacles);

@@ -1,4 +1,3 @@
-// roverServer.ts
 import express from "express";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
@@ -29,15 +28,16 @@ export class RoverServer {
         this.setupSocketEvents();
     }
 
-    private sendToRover(instruction: string): string {
+    // Méthode pour simuler l'envoi d'instructions au rover
+    private sendToRover(instruction: string): object {
         console.log(`Envoi de l'instruction au rover: ${instruction}`);
         return RoverInterpreter.interpreterCommands(instruction, this._rover);
     }
 
+    // Méthode pour configurer les événements Socket.IO
     private setupSocketEvents(): void {
         this._io.on("connection", (socket) => {
             console.log("Un client est connecté");
-
             socket.on("sendInstruction", (instruction: string) => {
                 console.log(`Instruction reçue du client: ${instruction}`);
                 const roverResponse = this.sendToRover(instruction);

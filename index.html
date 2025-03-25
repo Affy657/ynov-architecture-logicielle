@@ -9,7 +9,7 @@
       font-family: 'Arial', sans-serif;
       background-color: #f4f7f6;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       height: 100vh;
       margin: 0;
@@ -22,41 +22,13 @@
       border-radius: 10px;
       padding: 30px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
       max-width: 400px;
-    }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: #4A90E2;
-    }
-
-    .legend {
-      margin: 20px 0;
-      font-size: 16px;
-      color: #777;
-      line-height: 1.6;
-    }
-
-    .legend span {
-      font-weight: bold;
-      color: #4A90E2;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
       margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-      transition: border-color 0.3s;
     }
 
-    input[type="text"]:focus {
-      border-color: #4A90E2;
-      outline: none;
+    canvas {
+      border: 2px solid #4A90E2;
+      background-color: #ffffff;
     }
 
     button {
@@ -68,42 +40,6 @@
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #357ABD;
-    }
-
-    button:disabled {
-      background-color: #B0C4DE;
-      cursor: not-allowed;
-    }
-
-    .spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #4A90E2;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      animation: spin 1s linear infinite;
-      margin-right: 10px;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .loading {
-      display: inline-block;
-    }
-
-    .response-message {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #4A90E2;
-      font-weight: bold;
     }
   </style>
 </head>
@@ -125,33 +61,73 @@
     <span class="spinner" id="loadingSpinner"></span>
     Envoyer l'instruction
   </button>
+  <div id="roverPosition">Rover position: (0, 0)</div>
   <div class="response-message" id="responseMessage"></div>
 </div>
+
+<canvas id="roverCanvas" width="500" height="500"></canvas>
 
 <script type="module">
   import { io } from "socket.io-client";
   const socket = io("http://localhost:3000");
-  function sendInstructionToRover(instruction) {
-    socket.emit("sendInstruction", instruction);
+
+  const directionIcons = {
+    "Nord": "⬆️",
+    "Sud": "⬇️",
+    "Est": "➡️",
+    "Ouest": "⬅️"
+  };
+
+  const canvas = document.getElementById("roverCanvas");
+  const ctx = canvas.getContext("2d");
+  const gridSize = 10;
+  const cellSize = canvas.width / gridSize;
+  let rover = { x: 0, y: 0 , orientation: "north" };
+
+  function drawGrid() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i <= gridSize; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * cellSize, 0);
+      ctx.lineTo(i * cellSize, canvas.height);
+      ctx.moveTo(0, i * cellSize);
+      ctx.lineTo(canvas.width, i * cellSize);
+      ctx.strokeStyle = "#ddd";
+      ctx.stroke();
+    }
+    drawRover();
   }
+
+  function drawRover() {
+    ctx.fillStyle = directionIcons[rover.orientation] || "❓";
+    ctx.fillRect(rover.x * cellSize, rover.y * cellSize, cellSize, cellSize);
+  }
+
+  function updateRoverPosition(x, y, orientation) {
+    rover.x = x;
+    rover.y = y;
+    rover.orientation = orientation;
+    drawGrid();
+  }
+
   socket.on("roverResponse", (response) => {
-    document.getElementById("responseMessage").innerText = "Réponse du rover: " + response;
-    document.getElementById("loadingSpinner").style.display = 'none';
-    document.getElementById("sendButton").disabled = false;
+    console.log(response);
+    const { x, y, orientation } = response;
+    document.getElementById("roverPosition").innerText = `Rover position: (${x}, ${y})`;
+    document.getElementById("responseMessage").innerText = "Réponse du rover reçue !";
+    updateRoverPosition(x, y, orientation);
   });
+
   document.getElementById("sendButton").addEventListener("click", () => {
     const instruction = document.getElementById("instructionInput").value;
-
     if (!instruction.trim()) {
       alert("Veuillez entrer une instruction.");
       return;
     }
-
-    document.getElementById("sendButton").disabled = true;
-    document.getElementById("loadingSpinner").style.display = 'inline-block';
-
-    sendInstructionToRover(instruction);
+    socket.emit("sendInstruction", instruction);
   });
+
+  drawGrid();
 </script>
 
 </body>
