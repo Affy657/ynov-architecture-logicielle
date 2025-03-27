@@ -1,5 +1,5 @@
 import { Server as SockerIOServer, Socket as ServerSocket } from 'socket.io';
-import Coord from '../coord/Coord';
+import Coord from '../Geometrie/Coord';
 
 export class CommandFeedback {
   private readonly _socket: ServerSocket;
@@ -18,7 +18,7 @@ export class CommandFeedback {
 export default class ServerHandler {
   private readonly _io: SockerIOServer = new SockerIOServer(process.env.SERVER_PORT as unknown as number, {
     cors: {
-      origin: 'http://localhost:5173',
+      origin:`http://localhost:${process.env.FRONT_PORT}`,
       methods: ['CONNECT'],
     }
   });

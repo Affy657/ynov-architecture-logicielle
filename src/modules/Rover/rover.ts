@@ -1,8 +1,8 @@
 import { IEtatRover, IRover, Orientation } from './rover.interface';
-import Map from '../map/Map';
-import Coord from '../coord/Coord';
-import RoverInterpreter from './roverInterpreter';
-import ServerHandler, { type CommandFeedback } from '../network/ServerHandler';
+import Map from '../Geometrie/Map';
+import Coord from '../Geometrie/Coord';
+import RoverInterpreter from '../Interpreter/roverInterpreter';
+import ServerHandler, { type CommandFeedback } from '../Network/ServerHandler';
 
 enum Order {
     Avancer = 'Avancer',
@@ -92,7 +92,7 @@ export default class Rover implements IRover, IEtatRover {
     public setObstacles(obstacles: Coord[]): void {
         this._map.setObstacles(obstacles);
         if ( this._map.isObstacle(this._coord)) {
-            throw new Error("Obstacles cannot be placed on the rover");
+            throw new Error("Obstacles cannot be placed on the Rover");
         };
     }
 

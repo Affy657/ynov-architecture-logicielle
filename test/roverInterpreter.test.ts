@@ -1,9 +1,9 @@
-import RoverInterpreter from '../src/modules/rover/roverInterpreter';
-import Rover, { type Options } from '../src/modules/rover/rover';
-import { Orientation } from '../src/modules/rover/rover.interface';
-import Map from '../src/modules/map/Map';
-import Coord from '../src/modules/coord/Coord';
-import ServerHandler from '../src/modules/network/ServerHandler';
+import RoverInterpreter from '../src/modules/Interpreter/roverInterpreter';
+import Rover, { type Options } from '../src/modules/Rover/rover';
+import { Orientation } from '../src/modules/Rover/rover.interface';
+import Map from '../src/modules/Geometrie/Map';
+import Coord from '../src/modules/Geometrie/Coord';
+import ServerHandler from '../src/modules/Network/ServerHandler';
 
 describe('RoverInterpreter tests', () => {
     type Pos = {
@@ -59,7 +59,7 @@ describe('RoverInterpreter tests', () => {
         basicTest(rover, expectedOptions);
     });
 
-    test('Tester un rover qui se déplace vers un obstacle', () => {
+    test('Tester un Rover qui se déplace vers un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 1)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: map, isunittest:true });
         const roverInterpreter = new RoverInterpreter(rover);
@@ -69,7 +69,7 @@ describe('RoverInterpreter tests', () => {
         basicTest(rover, expectedOptions);
     });
 
-    test('Essayer de déplacer un rover au bord de la carte', () => {
+    test('Essayer de déplacer un Rover au bord de la carte', () => {
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10), isunittest:true });
         const roverInterpreter = new RoverInterpreter(rover);
         const instructions = ServerHandler.decodeInstruction('a a a a');

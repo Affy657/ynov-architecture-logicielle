@@ -31,4 +31,4 @@ Pour démarrer le serveur et le projet en mode développement, exécutez la comm
 Une fois le serveur lancé, ouvrez votre navigateur et allez sur l'adresse suivante pour tester l'application :
 
 ```http
-http://localhost:5173/
+http://localhost:5174/
