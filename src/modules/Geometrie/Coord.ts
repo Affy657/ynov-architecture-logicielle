@@ -65,8 +65,8 @@ export default class Coord {
   }
 
   /**
-   * Is coord equal to another coord
-   * @param {Coord} coord - The coord to compare
+   * Is Geometrie equal to another Geometrie
+   * @param {Coord} coord - The Geometrie to compare
    * @returns {boolean}
    */
   public equals(coord: Coord): boolean {

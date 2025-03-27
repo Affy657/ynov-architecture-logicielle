@@ -1,4 +1,4 @@
-import Coord from '../coord/Coord';
+import Coord from './Coord';
 
 /**
  * Classe objet valeur.
@@ -42,8 +42,8 @@ export default class Map {
     }
 
     /**
-     * Set next coord wrapping around the map
-     * @param {Coord} coord - The current coord
+     * Set next Geometrie wrapping around the map
+     * @param {Coord} coord - The current Geometrie
      */
     public getNextCoord(coord: Coord) {
         const newCoord = coord.modulo(this._maxCoord);

@@ -1,7 +1,7 @@
-import {Orientation} from '../src/modules/rover/rover.interface';
-import Rover, { type Options } from '../src/modules/rover/rover';
-import Map from '../src/modules/map/Map';
-import Coord from '../src/modules/coord/Coord';
+import {Orientation} from '../src/modules/Rover/rover.interface';
+import Rover, { type Options } from '../src/modules/Rover/rover';
+import Map from '../src/modules/Geometrie/Map';
+import Coord from '../src/modules/Geometrie/Coord';
 
 describe('Rover avance', () => {
     type Pos = {
@@ -190,7 +190,7 @@ describe('Rover avance', () => {
         expect( rover.getPositionX()).toBe(positionX);
     });
 
-    test('Instancier un rover sur un obstacle', () => {
+    test('Instancier un Rover sur un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 8), new Coord(0, 9)]);
         expect(() =>  new Rover({ x: 0, y: 9, orientation: Orientation.Sud, map: map, isunittest: true })).toThrow("Rover cannot be placed on an obstacle");
     });
