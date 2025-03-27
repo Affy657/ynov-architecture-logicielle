@@ -1,4 +1,4 @@
-import Coord from '../coord';
+import Coord from '../coord/Coord';
 
 /**
  * Classe objet valeur.

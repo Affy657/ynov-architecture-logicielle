@@ -1,5 +1,5 @@
 import { Server as SockerIOServer, Socket as ServerSocket } from 'socket.io';
-import Coord from '../coord';
+import Coord from '../coord/Coord';
 
 export class CommandFeedback {
   private readonly _socket: ServerSocket;

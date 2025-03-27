@@ -1,8 +1,8 @@
 import { IEtatRover, IRover, Orientation } from './rover.interface';
-import Map from './modules/map';
-import Coord from './modules/coord';
+import Map from '../map/Map';
+import Coord from '../coord/Coord';
 import RoverInterpreter from './roverInterpreter';
-import ServerHandler, { type CommandFeedback } from './modules/network/ServerHandler';
+import ServerHandler, { type CommandFeedback } from '../network/ServerHandler';
 
 enum Order {
     Avancer = 'Avancer',
@@ -42,9 +42,6 @@ export default class Rover implements IRover, IEtatRover {
         }
         this._coord = this._map.getNextCoord(coord);
         this._orientation = options.orientation ?? Orientation.Nord;
-
-        console.log('Rover created at', this._coord, 'with orientation', this._orientation);
-
         this._serverHandler.onObstacles(this._roverInterpreter.interpreterObstacle.bind(this._roverInterpreter));
         this._serverHandler.onCommand((CommandFeedback: CommandFeedback) => {
           this._roverInterpreter.interpreterCommands(CommandFeedback.cmd);

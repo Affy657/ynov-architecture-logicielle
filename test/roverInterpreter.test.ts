@@ -1,8 +1,8 @@
-import RoverInterpreter from '../src/roverInterpreter';
-import Rover, { type Options } from '../src/Rover';
-import { Orientation } from '../src/rover.interface';
-import Map from '../src/modules/map';
-import Coord from '../src/modules/coord';
+import RoverInterpreter from '../src/modules/rover/roverInterpreter';
+import Rover, { type Options } from '../src/modules/rover/rover';
+import { Orientation } from '../src/modules/rover/rover.interface';
+import Map from '../src/modules/map/Map';
+import Coord from '../src/modules/coord/Coord';
 import ServerHandler from '../src/modules/network/ServerHandler';
 
 describe('RoverInterpreter tests', () => {

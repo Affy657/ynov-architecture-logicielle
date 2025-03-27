@@ -1,7 +1,7 @@
-import {Orientation} from '../src/rover.interface';
-import Rover, { type Options } from '../src/Rover';
-import Map from '../src/modules/map';
-import Coord from '../src/modules/coord';
+import {Orientation} from '../src/modules/rover/rover.interface';
+import Rover, { type Options } from '../src/modules/rover/rover';
+import Map from '../src/modules/map/Map';
+import Coord from '../src/modules/coord/Coord';
 
 describe('Rover avance', () => {
     type Pos = {

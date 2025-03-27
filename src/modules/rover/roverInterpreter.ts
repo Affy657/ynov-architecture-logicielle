@@ -1,5 +1,5 @@
-import Rover from './Rover';
-import Coord from './modules/coord';
+import Rover from './rover';
+import Coord from '../coord/Coord';
 
 /**
  * Classe interprète pour interpréter une séquence de commandes et exécuter les actions sur un Rover.
