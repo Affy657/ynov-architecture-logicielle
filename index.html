@@ -123,11 +123,12 @@
 </div>
 
 <script type="module">
-  import ClientHandler from './src/modules/Network/ClientHandler.js';
-  
+  import ClientHandler from './src/modules/Network/ClientHandler.ts';
+
   const client = new ClientHandler();
 
   let obstacles = [];
+  let lastInstruction = ""; // Stocke la dernière instruction envoyée
   const directionIcons = {
     0: "⬆️", // Nord
     1: "⬇️", // Sud
@@ -141,12 +142,34 @@
   const cellSize = canvas.width / gridSize;
   let rover = { x: 0, y: 0, orientation: 0 };
 
+  // Renvoie l'icône correspondant à l'orientation
   function getDirectionIcon(orientation) {
-    console.log(orientation);
     return directionIcons[Number(orientation)] || "❓";
   }
 
-  function drawGrid() {
+  // Calcule la position que le rover devrait atteindre selon l'instruction
+  function computeIntendedPosition(instruction, pos) {
+    let dx = 0, dy = 0;
+    if (instruction === "A") { // Avancer
+      switch (pos.orientation) {
+        case 0: dy = -1; break;
+        case 1: dy = 1; break;
+        case 2: dx = 1; break;
+        case 3: dx = -1; break;
+      }
+    } else if (instruction === "R") { // Reculer
+      switch (pos.orientation) {
+        case 0: dy = 1; break;
+        case 1: dy = -1; break;
+        case 2: dx = -1; break;
+        case 3: dx = 1; break;
+      }
+    }
+    return { x: pos.x + dx, y: pos.y + dy };
+  }
+
+  // Dessine la grille, les obstacles (si bloqué) et le rover
+  function drawGrid(blocked, collidedObstacle = null) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i <= gridSize; i++) {
       ctx.beginPath();
@@ -157,7 +180,10 @@
       ctx.strokeStyle = "#ddd";
       ctx.stroke();
     }
-    drawObstacles();
+    // Affiche les obstacles uniquement si le rover est bloqué
+    if (blocked) {
+      drawObstacles(collidedObstacle);
+    }
     drawRover();
   }
 
@@ -169,30 +195,54 @@
     ctx.fillText(arrow, rover.x * cellSize + cellSize / 2, rover.y * cellSize + cellSize / 2);
   }
 
-  function drawObstacles() {
-    ctx.fillStyle = "red";
-    obstacles.forEach(obstacle => {
+  function drawObstacles(collidedObstacle) {
+    if (collidedObstacle) {
       ctx.beginPath();
-      ctx.arc(obstacle.x * cellSize + cellSize / 2, obstacle.y * cellSize + cellSize / 2, cellSize / 3, 0, 2 * Math.PI);
+      ctx.fillStyle = "orange";
+      ctx.arc(
+        collidedObstacle.x * cellSize + cellSize / 2,
+        collidedObstacle.y * cellSize + cellSize / 2,
+        cellSize / 3,
+        0,
+        2 * Math.PI
+      );
       ctx.fill();
-    });
+    }
   }
 
-  function updateRoverPosition(x, y, orientation) {
+  // Met à jour la position et l'orientation du rover, puis redessine la grille
+  function updateRoverPosition(x, y, orientation, blocked, collidedObstacle = null) {
     rover.x = x;
     rover.y = y;
     rover.orientation = orientation;
-    drawGrid();
+    drawGrid(blocked, collidedObstacle);
   }
 
   client.onRoverResponse((response) => {
-    console.log(response);
+    // Sauvegarde la position précédente pour comparaison
+    const previousX = rover.x;
+    const previousY = rover.y;
     const { x, y, orientation } = response;
     document.getElementById("roverPosition").innerText = `Rover position: (${x}, ${y})`;
-    document.getElementById("responseMessage").innerText = "Réponse du rover reçue !";
-    updateRoverPosition(x, y, orientation);
-  })
+    let isBlocked = false;
+    let collidedObstacle = null;
 
+    // Si la commande était "A" ou "R" et que la position n'a pas changé, le rover est bloqué
+    if ((lastInstruction.toUpperCase() === "A" || lastInstruction.toUpperCase() === "R") && previousX === x && previousY === y) {
+      isBlocked = true;
+      // Calcule la position que le rover aurait dû atteindre
+      let intendedPos = computeIntendedPosition(lastInstruction.toUpperCase(), { x: previousX, y: previousY, orientation: rover.orientation });
+      collidedObstacle = obstacles.find(obstacle => obstacle.x === intendedPos.x && obstacle.y === intendedPos.y);
+      if (collidedObstacle) {
+        document.getElementById("responseMessage").innerText = "Collision avec l'obstacle à (" + collidedObstacle.x + ", " + collidedObstacle.y + ") !";
+      } else {
+        document.getElementById("responseMessage").innerText = "Rover bloqué, mais aucun obstacle identifié à (" + intendedPos.x + ", " + intendedPos.y + ")";
+      }
+    } else {
+      document.getElementById("responseMessage").innerText = "Réponse du rover reçue !";
+    }
+    updateRoverPosition(x, y, orientation, isBlocked, collidedObstacle);
+  });
 
   client.onConnect(() => {
     document.getElementById('obstaclePopup').style.display = 'flex';
@@ -206,7 +256,7 @@
       alert("Coordonnées invalides !");
       return;
     }
-    
+
     obstacles.push({ x, y });
     document.getElementById('obstacleInput').value = '';
 
@@ -216,7 +266,8 @@
   document.getElementById('submitObstaclesButton').addEventListener('click', () => {
     client.sendObstacles(obstacles);
     document.getElementById('obstaclePopup').style.display = 'none';
-    drawGrid();
+    // Affiche la grille initialement sans obstacles (ils n'apparaîtront qu'en cas de blocage)
+    drawGrid(false);
   });
 
   document.getElementById("sendButton").addEventListener("click", () => {
@@ -225,10 +276,12 @@
       alert("Veuillez entrer une instruction.");
       return;
     }
+    lastInstruction = instruction.trim(); // Mémorise l'instruction envoyée
     client.sendInstruction(instruction);
   });
 
-  drawGrid();
+  // Dessiner la grille initialement sans obstacles
+  drawGrid(false);
 </script>
 </body>
 </html>
