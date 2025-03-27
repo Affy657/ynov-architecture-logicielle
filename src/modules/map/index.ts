@@ -1,4 +1,4 @@
-import Coord from "./coord";
+import Coord from '../coord';
 
 /**
  * Classe objet valeur.
@@ -7,7 +7,7 @@ import Coord from "./coord";
  * @class
  * @classdesc Classe représentant une carte.
  */
-export class Map  {
+export default class Map {
     private _maxCoord: Coord;
     private _minCoord: Coord;
     private _obstacles: Coord[];

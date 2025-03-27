@@ -1,8 +1,9 @@
-import { RoverInterpreter } from "../src/roverInterpreter";
-import { Rover } from "../src/Rover";
-import { Orientation } from "../src/rover.interface";
-import { Map } from "../src/map";
-import Coord from "../src/coord";
+import RoverInterpreter from '../src/roverInterpreter';
+import Rover, { type Options } from '../src/Rover';
+import { Orientation } from '../src/rover.interface';
+import Map from '../src/modules/map';
+import Coord from '../src/modules/coord';
+import ServerHandler from '../src/modules/network/ServerHandler';
 
 describe('RoverInterpreter tests', () => {
     type Pos = {
@@ -17,7 +18,7 @@ describe('RoverInterpreter tests', () => {
         expect(etat.getOrientation()).toBe(expectedOptions.orientation);
     };
 
-    const inputOptions: Rover.Options = {
+    const inputOptions: Options = {
         orientation: Orientation.Ouest,
         x: 0,
         y: 0,
@@ -26,28 +27,34 @@ describe('RoverInterpreter tests', () => {
 
     test('Interpréter une séquence de commandes "a r g d" sur Rover', () => {
         const rover: Rover = new Rover(inputOptions);
-        RoverInterpreter.interpreterCommands('a r g d', rover);
+        const roverInterpreter = new RoverInterpreter(rover);
+        roverInterpreter.interpreterCommands('a r g d');
         const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Ouest };
         basicTest(rover, expectedOptions);
     });
 
     test('Interpréter une séquence de commandes "argd" sur Rover', () => {
         const rover: Rover = new Rover(inputOptions);
-        RoverInterpreter.interpreterCommands('argd', rover);
+        const roverInterpreter = new RoverInterpreter(rover);
+        roverInterpreter.interpreterCommands('argd');
         const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Ouest };
         basicTest(rover, expectedOptions);
     });
 
     test('Interpréter une séquence de commandes "a a g d" sur Rover', () => {
         const rover: Rover = new Rover(inputOptions);
-        RoverInterpreter.interpreterCommands('a a g d', rover);
+        const roverInterpreter = new RoverInterpreter(rover);
+        const instructions = ServerHandler.decodeInstruction('a a g d')
+        instructions.forEach(roverInterpreter.interpreterCommands.bind(roverInterpreter));
         const expectedOptions: Pos = { x: 8, y: 0, orientation: Orientation.Ouest };
         basicTest(rover, expectedOptions);
     });
 
     test('Interpréter une séquence de commandes avec des orientations multiples', () => {
         const rover: Rover = new Rover(inputOptions);
-        RoverInterpreter.interpreterCommands('d d a g r', rover);
+        const roverInterpreter = new RoverInterpreter(rover);
+        const instructions = ServerHandler.decodeInstruction('d d a g r');
+        instructions.forEach(instruction => roverInterpreter.interpreterCommands(instruction));
         const expectedOptions: Pos = { x: 1, y: 1, orientation: Orientation.Nord };
         basicTest(rover, expectedOptions);
     });
@@ -55,14 +62,18 @@ describe('RoverInterpreter tests', () => {
     test('Tester un rover qui se déplace vers un obstacle', () => {
         const map = new Map(10, 10, [new Coord(0, 1)]);
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Sud, map: map, isunittest:true });
-        RoverInterpreter.interpreterCommands('a a', rover);
+        const roverInterpreter = new RoverInterpreter(rover);
+        const instructions = ServerHandler.decodeInstruction('a a');
+        instructions.forEach(instruction => roverInterpreter.interpreterCommands(instruction));
         const expectedOptions: Pos = { x: 0, y: 0, orientation: Orientation.Sud };
         basicTest(rover, expectedOptions);
     });
 
     test('Essayer de déplacer un rover au bord de la carte', () => {
         const rover = new Rover({ x: 0, y: 0, orientation: Orientation.Nord, map: new Map(10, 10), isunittest:true });
-        RoverInterpreter.interpreterCommands('a a a a', rover);
+        const roverInterpreter = new RoverInterpreter(rover);
+        const instructions = ServerHandler.decodeInstruction('a a a a');
+        instructions.forEach(instruction => roverInterpreter.interpreterCommands(instruction));
         const expectedOptions: Pos = { x: 0, y: 6, orientation: Orientation.Nord };
         basicTest(rover, expectedOptions);
     });
@@ -70,7 +81,8 @@ describe('RoverInterpreter tests', () => {
     test('Vérifier qu\'une commande inconnue ne modifie pas l\'état du Rover et logge l\'erreur', () => {
         const rover: Rover = new Rover(inputOptions);
         const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
-        expect(() => RoverInterpreter.interpreterCommands('a x r', rover)).not.toThrow();
+        const roverInterpreter = new RoverInterpreter(rover);
+        expect(() => roverInterpreter.interpreterCommands('x')).not.toThrow();
         expect(consoleSpy).toHaveBeenCalledWith("Commande inconnue: x");
         consoleSpy.mockRestore();
     });

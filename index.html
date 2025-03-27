@@ -123,8 +123,9 @@
 </div>
 
 <script type="module">
-  import { io } from "socket.io-client";
-  const socket = io("http://localhost:3000");
+  import ClientHandler from './src/modules/network/ClientHandler';
+  
+  const client = new ClientHandler();
 
   let obstacles = [];
   const directionIcons = {
@@ -184,15 +185,16 @@
     drawGrid();
   }
 
-  socket.on("roverResponse", (response) => {
+  client.onRoverResponse((response) => {
     console.log(response);
     const { x, y, orientation } = response;
     document.getElementById("roverPosition").innerText = `Rover position: (${x}, ${y})`;
     document.getElementById("responseMessage").innerText = "Réponse du rover reçue !";
     updateRoverPosition(x, y, orientation);
-  });
+  })
 
-  socket.on('connect', () => {
+
+  client.onConnect(() => {
     document.getElementById('obstaclePopup').style.display = 'flex';
   });
 
@@ -204,7 +206,7 @@
       alert("Coordonnées invalides !");
       return;
     }
-
+    
     obstacles.push({ x, y });
     document.getElementById('obstacleInput').value = '';
 
@@ -212,7 +214,7 @@
   });
 
   document.getElementById('submitObstaclesButton').addEventListener('click', () => {
-    socket.emit('setObstacles', obstacles);
+    client.sendObstacles(obstacles);
     document.getElementById('obstaclePopup').style.display = 'none';
     drawGrid();
   });
@@ -223,7 +225,7 @@
       alert("Veuillez entrer une instruction.");
       return;
     }
-    socket.emit("sendInstruction", instruction);
+    client.sendInstruction(instruction);
   });
 
   drawGrid();

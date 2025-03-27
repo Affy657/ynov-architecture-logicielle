@@ -1,5 +1,5 @@
 import Rover from './Rover';
-import Coord from './coord';
+import Coord from './modules/coord';
 
 /**
  * Classe interprète pour interpréter une séquence de commandes et exécuter les actions sur un Rover.
@@ -42,7 +42,9 @@ export default class RoverInterpreter {
         };
 
     }
+    
     public interpreterObstacle(obstacles: Coord[]): void {
-        this._rover.setObstacles(obstacles);
+      console.log('Obstacles received', obstacles);
+      this._rover.setObstacles(obstacles);
     }
 }

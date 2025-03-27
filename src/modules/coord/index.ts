@@ -70,7 +70,7 @@ export default class Coord {
    * @returns {boolean}
    */
   public equals(coord: Coord): boolean {
-        return this._x === coord.x && this._y === coord.y;
+    return this._x === coord.x && this._y === coord.y;
   }
 
   /**
@@ -79,6 +79,6 @@ export default class Coord {
    * @returns {Coord}
    */
   public from(coord: Coord) {
-        return new Coord(coord.x, coord.y);
+    return new Coord(coord.x, coord.y);
   }
 }

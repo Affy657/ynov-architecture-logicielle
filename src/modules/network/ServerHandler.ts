@@ -1,23 +1,11 @@
-import express, { type Express } from "express";
-import { Server as SockerIOServer, type Socket } from "socket.io";
-import cors from "cors";
-import {
-  createServer,
-  type Server
-} from 'http';
-import Coord from "./coord";
-
-export default class NetworkHandler {
-  public static createServerHandler(): ServerHandler {
-    return new ServerHandler();
-  }
-}
+import { Server as SockerIOServer, Socket as ServerSocket } from 'socket.io';
+import Coord from '../coord';
 
 export class CommandFeedback {
-  private readonly _socket: Socket;
+  private readonly _socket: ServerSocket;
   public readonly cmd: string;
 
-  public constructor(socket: Socket, cmd: string) {
+  public constructor(socket: ServerSocket, cmd: string) {
     this._socket = socket;
     this.cmd = cmd;
   }
@@ -27,10 +15,8 @@ export class CommandFeedback {
   }
 }
 
-export class ServerHandler {
-  private readonly _app: Express = express();
-  private readonly _server: Server = createServer(this._app);
-  private readonly _io: SockerIOServer = new SockerIOServer(this._server, {
+export default class ServerHandler {
+  private readonly _io: SockerIOServer = new SockerIOServer(process.env.SERVER_PORT as unknown as number, {
     cors: {
       origin: 'http://localhost:5173',
       methods: ['CONNECT'],
@@ -39,8 +25,6 @@ export class ServerHandler {
   private readonly events: { [key: string]: Function[] };
 
   public constructor() {
-    this._app.use(cors());
-
     this.events = {
       commands: [],
       obstacles: []
@@ -50,28 +34,26 @@ export class ServerHandler {
       console.log('A client is connected');
       socket.on('sendInstruction', (instruction: string) => {
         console.log('Instruction received from client:', instruction);
-        const cmdArray = instruction.includes(' ')
-        ? instruction.split(' ')
-        : [...instruction];
 
-        for (const cmd of cmdArray) {
+        for (const cmd of ServerHandler.decodeInstruction(instruction)) {
           this.emitCommand(new CommandFeedback(socket, cmd));
         }
       });
 
-      socket.once('setObstacles', (obtacles: [{x: number, y: number}]) => {
-        console.log('Obstacles received:', JSON.stringify(obtacles));
-        this.emitObstacles(obtacles.map((obstacle) => new Coord(obstacle.x, obstacle.y)));
+      socket.on('setObstacles', (obstacles: {x: number; y: number}[]) => {
+        this.emitObstacles(obstacles.map((obs) => new Coord(obs.x, obs.y)));
       });
 
       socket.once('disconnect', () => {
         console.log('A client is disconnected');
       });
     });
-
-    this._server.listen(process.env.SERVER_PORT, () => {
-      console.log(`Server is running on port ${process.env.SERVER_PORT}`);
-    });
+  }
+  
+  public static decodeInstruction(instruction: string): string[] {
+    return instruction.includes(' ')
+      ? instruction.split(' ')
+      : [...instruction];
   }
 
   public onCommand(callback: any) {

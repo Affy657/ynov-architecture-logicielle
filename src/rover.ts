@@ -1,12 +1,12 @@
-import { IEtatRover, IRover, Orientation } from "./rover.interface";
-import { Map } from "./map";
-import Coord from "./coord";
+import { IEtatRover, IRover, Orientation } from './rover.interface';
+import Map from './modules/map';
+import Coord from './modules/coord';
 import RoverInterpreter from './roverInterpreter';
-import NetworkHandler, { type CommandFeedback, type ServerHandler } from './NetworkHandler';
+import ServerHandler, { type CommandFeedback } from './modules/network/ServerHandler';
 
 enum Order {
-    Avancer = "Avancer",
-    Reculer = "Reculer"
+    Avancer = 'Avancer',
+    Reculer = 'Reculer'
 }
 
 /**
@@ -19,7 +19,7 @@ export default class Rover implements IRover, IEtatRover {
     private _coord: Coord;
     private _orientation: Orientation;
     private _map: Map;
-    private readonly _serverHandler: ServerHandler = NetworkHandler.createServerHandler();
+    private readonly _serverHandler: ServerHandler = new ServerHandler();
     private readonly _roverInterpreter: RoverInterpreter = new RoverInterpreter(this);
 
     /**
@@ -31,7 +31,7 @@ export default class Rover implements IRover, IEtatRover {
      * @param {Orientation} options.orientation - L'orientation du Rover (optionnelle, valeur par défaut : Orientation.Nord).
      * @param {Map} options.map - La carte sur laquelle le Rover évolue (optionnelle, valeur par défaut : une carte 10x10).
      */
-    constructor(options: Rover.Options) {
+    constructor(options: Options) {
         options.x ??= 0;
         options.y ??= 0;
         options.isunittest ??= false;
@@ -177,28 +177,26 @@ export default class Rover implements IRover, IEtatRover {
     }
 }
 
-export namespace Rover {
-    export type Options = {
-        /**
-         * La position X du Rover (optionnelle).
-         * Si non spécifiée, la valeur par défaut est 0.
-         */
-        x?: number;
-        /**
-         * La position Y du Rover (optionnelle).
-         * Si non spécifiée, la valeur par défaut est 0.
-         */
-        y?: number;
-        /**
-         * L'orientation initiale du Rover (optionnelle).
-         * Si non spécifiée, la valeur par défaut est Orientation.Nord.
-         */
-        orientation?: Orientation;
-        /**
-         * La carte sur laquelle le Rover évolue (optionnelle).
-         * Si non spécifiée, une carte de taille 10x10 sera utilisée par défaut.
-         */
-        map?: Map;
-        isunittest?: boolean;
-    }
+export type Options = {
+    /**
+     * La position X du Rover (optionnelle).
+     * Si non spécifiée, la valeur par défaut est 0.
+     */
+    x?: number;
+    /**
+     * La position Y du Rover (optionnelle).
+     * Si non spécifiée, la valeur par défaut est 0.
+     */
+    y?: number;
+    /**
+     * L'orientation initiale du Rover (optionnelle).
+     * Si non spécifiée, la valeur par défaut est Orientation.Nord.
+     */
+    orientation?: Orientation;
+    /**
+     * La carte sur laquelle le Rover évolue (optionnelle).
+     * Si non spécifiée, une carte de taille 10x10 sera utilisée par défaut.
+     */
+    map?: Map;
+    isunittest?: boolean;
 }
